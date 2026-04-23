@@ -9,6 +9,7 @@ import { ReviewModal } from '@/components/app/modals/ReviewModal';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
 import { useBalances } from '@/hooks/useBalances';
+import { useToast } from '@/components/ui/Toast';
 import { calculateLoanParams } from '@/services/pricing';
 import type { LoanCalculation } from '@/types';
 import type { AssetKey } from '@/services/constants';
@@ -16,6 +17,7 @@ import type { AssetKey } from '@/services/constants';
 export default function BorrowPage() {
   const { state, setActiveRequest } = useLoanContext();
   const { service } = useThetanuts();
+  const { showToast } = useToast();
   useBalances();
   const [depositAmount, setDepositAmount] = useState('0.001');
   const [receiveAmount, setReceiveAmount] = useState('');
@@ -61,8 +63,10 @@ export default function BorrowPage() {
     if (!state.activeLoanRequestId) return;
     try {
       await service.cancelLoan(BigInt(state.activeLoanRequestId));
+      showToast('Loan request cancelled', 'success');
     } catch (e: any) {
       console.error('Cancel failed:', e.message);
+      showToast(e.message || 'Failed to cancel', 'error');
     } finally {
       setActiveRequest(null);
     }

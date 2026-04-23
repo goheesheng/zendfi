@@ -1,6 +1,6 @@
 'use client';
 
-import { LOAN_ASSETS } from '@/services/constants';
+import { LOAN_ASSETS, STRIKE_DECIMALS } from '@/services/constants';
 import { formatUsdc } from '@/services/formatting';
 import { ethers } from 'ethers';
 import type { Loan } from '@/types';
@@ -30,12 +30,21 @@ export function LendTable({ loans }: { loans: Loan[] }) {
             const symbol = asset ? asset[1].symbol : '?';
             const decimals = asset ? asset[1].decimals : 18;
 
+            const now = Math.floor(Date.now() / 1000);
+            const hoursToExpiry = (loan.expiryTimestamp - now) / 3600;
+            const strike = Number(loan.strike) / 10 ** STRIKE_DECIMALS;
+            const minSettlement = Number(loan.minSettlementAmount) / 1e6;
+            const oweAmount = (Number(loan.collateralAmount) / 10 ** decimals) * strike;
+            const apr = hoursToExpiry > 0 && minSettlement > 0
+              ? ((oweAmount / minSettlement - 1) * 8760) / hoursToExpiry * 100
+              : 0;
+
             return (
               <tr key={loan.quotationId.toString()} className="border-b border-gray-100 dark:border-zend-border/50">
                 <td className="py-3 font-semibold text-gray-900 dark:text-white">{symbol}</td>
                 <td className="py-3 text-right text-gray-900 dark:text-white">{formatUsdc(loan.minSettlementAmount)} USDC</td>
                 <td className="py-3 text-right text-gray-900 dark:text-white">{ethers.formatUnits(loan.collateralAmount, decimals)} {symbol}</td>
-                <td className="py-3 text-center text-emerald-500">--</td>
+                <td className="py-3 text-center text-emerald-500">{apr > 0 ? apr.toFixed(1) + '%' : '--'}</td>
                 <td className="py-3 text-center">
                   <button className="px-3 py-1 rounded-lg bg-zend-accent text-white text-xs font-semibold hover:bg-zend-accent-hover transition-colors">Lend</button>
                 </td>

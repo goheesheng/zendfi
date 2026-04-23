@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
+import { useToast } from '@/components/ui/Toast';
 
 type StepStatus = 'pending' | 'active' | 'completed';
 
@@ -14,6 +15,7 @@ interface Props {
 export function LoanProgress({ onCancel, onDismiss }: Props) {
   const { state } = useLoanContext();
   const { service } = useThetanuts();
+  const { showToast } = useToast();
   const [steps, setSteps] = useState<StepStatus[]>(['active', 'pending', 'pending', 'pending']);
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
@@ -123,8 +125,9 @@ export function LoanProgress({ onCancel, onDismiss }: Props) {
                   if (!offer.decryptedAmount || !offer.nonce) return;
                   try {
                     await service.acceptOffer(BigInt(state.activeLoanRequestId!), offer.decryptedAmount, offer.nonce, offer.offeror);
+                    showToast('Offer accepted successfully', 'success');
                   } catch (e: any) {
-                    alert(e.message);
+                    showToast(e.message || 'Failed to accept offer', 'error');
                   }
                 }}
                 disabled={!offer.decryptedAmount}

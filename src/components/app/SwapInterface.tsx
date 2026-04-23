@@ -11,6 +11,7 @@ import { ReceivePanel } from './ReceivePanel';
 import { PaybackPanel } from './PaybackPanel';
 import { useAccount } from 'wagmi';
 import { ethers } from 'ethers';
+import { useBalances } from '@/hooks/useBalances';
 
 interface Props {
   onReview: () => void;
@@ -26,6 +27,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   const { state } = useLoanContext();
   const { service } = useThetanuts();
   const { address } = useAccount();
+  const { mmLiquidity } = useBalances();
   const [balance, setBalance] = useState('--');
   const [repayAmount, setRepayAmount] = useState('--');
   const [expiryDate, setExpiryDate] = useState('--');
@@ -56,6 +58,13 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
 
   return (
     <div className="flex flex-col gap-0">
+      {mmLiquidity !== '--' && (
+        <div className="mb-4 px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30 text-center">
+          <span className="text-xs text-indigo-600 dark:text-indigo-400">
+            Alpha Release — {mmLiquidity} USDC available from market makers
+          </span>
+        </div>
+      )}
       <DepositPanel
         amount={depositAmount}
         onAmountChange={onDepositAmountChange}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
+import { useToast } from '@/components/ui/Toast';
 import { LOAN_ASSETS, LOAN_COORDINATOR_ADDRESS, STRIKE_DECIMALS, USDC_ADDRESS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
 import { ethers } from 'ethers';
@@ -21,6 +22,7 @@ interface Props {
 export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanCalc, onConfirmed }: Props) {
   const { state, upsertLoan } = useLoanContext();
   const { service } = useThetanuts();
+  const { showToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
 
   const asset = LOAN_ASSETS[state.selectedCollateral as AssetKey];
@@ -84,7 +86,7 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanC
       onClose();
       onConfirmed(loanId);
     } catch (err: any) {
-      alert(err.message || 'Failed to submit loan request');
+      showToast(err.message || 'Failed to submit loan request', 'error');
     } finally {
       setSubmitting(false);
     }

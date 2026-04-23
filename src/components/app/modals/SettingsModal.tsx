@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { useLoanContext } from '@/context/LoanContext';
+import type { UserSettings } from '@/types';
 
 export function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { state, updateSettings, clearAll } = useLoanContext();
@@ -10,6 +11,7 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
   const [maxStrikes, setMaxStrikes] = useState(state.settings.maxStrikes);
   const [maxApr, setMaxApr] = useState(state.settings.maxApr);
   const [keepOpen, setKeepOpen] = useState(state.settings.keepOrderOpen);
+  const [sortOrder, setSortOrder] = useState<UserSettings['sortOrder']>(state.settings.sortOrder);
 
   useEffect(() => {
     if (open) {
@@ -17,11 +19,12 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
       setMaxStrikes(state.settings.maxStrikes);
       setMaxApr(state.settings.maxApr);
       setKeepOpen(state.settings.keepOrderOpen);
+      setSortOrder(state.settings.sortOrder);
     }
   }, [open, state.settings]);
 
   function save() {
-    updateSettings({ minDurationDays: minDays, maxStrikes, maxApr, keepOrderOpen: keepOpen });
+    updateSettings({ minDurationDays: minDays, maxStrikes, maxApr, keepOrderOpen: keepOpen, sortOrder });
     onClose();
   }
 
@@ -35,6 +38,19 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
         <div>
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-2">Max strikes per expiry</label>
           <input type="number" value={maxStrikes} onChange={(e) => setMaxStrikes(Number(e.target.value))} className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-zend-input border border-gray-200 dark:border-zend-border text-gray-900 dark:text-white text-sm" />
+        </div>
+        <div>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-2">Sort by</label>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as UserSettings['sortOrder'])}
+            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-zend-input border border-gray-200 dark:border-zend-border text-gray-900 dark:text-white text-sm"
+          >
+            <option value="highestStrike">Highest strike</option>
+            <option value="lowestStrike">Lowest strike</option>
+            <option value="nearestExpiry">Nearest expiry</option>
+            <option value="furthestExpiry">Furthest expiry</option>
+          </select>
         </div>
         <div>
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-2">Maximum APR: {maxApr}%</label>
