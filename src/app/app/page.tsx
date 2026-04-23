@@ -9,6 +9,9 @@ import { ReviewModal } from '@/components/app/modals/ReviewModal';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
 import { useBalances } from '@/hooks/useBalances';
+import { calculateLoanParams } from '@/services/pricing';
+import type { LoanCalculation } from '@/types';
+import type { AssetKey } from '@/services/constants';
 
 export default function BorrowPage() {
   const { state, setActiveRequest } = useLoanContext();
@@ -16,19 +19,43 @@ export default function BorrowPage() {
   useBalances();
   const [depositAmount, setDepositAmount] = useState('0.001');
   const [receiveAmount, setReceiveAmount] = useState('');
+  const [loanCalc, setLoanCalc] = useState<LoanCalculation | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [collateralOpen, setCollateralOpen] = useState(false);
   const [strikeOpen, setStrikeOpen] = useState(false);
 
+  // Calculate receive amount using accurate pricing
   useEffect(() => {
     const deposit = parseFloat(depositAmount) || 0;
     const strike = state.selectedStrike;
-    if (deposit <= 0 || !strike) {
+    const expiry = state.selectedExpiry;
+    const optData = state.selectedOptionData;
+
+    if (deposit <= 0 || !strike || !expiry || !optData) {
       setReceiveAmount('');
+      setLoanCalc(null);
       return;
     }
-    setReceiveAmount((deposit * strike * 0.95).toFixed(2));
-  }, [depositAmount, state.selectedStrike]);
+
+    const calc = calculateLoanParams({
+      depositAmount,
+      assetKey: state.selectedCollateral as AssetKey,
+      strike,
+      expiryTimestamp: expiry,
+      expiryLabel: optData.expiryLabel,
+      askPrice: optData.askPrice,
+      underlyingPrice: optData.underlyingPrice,
+      maxApr: state.settings.maxApr,
+    });
+
+    if (calc) {
+      setReceiveAmount(calc.receiveFormatted);
+      setLoanCalc(calc);
+    } else {
+      setReceiveAmount('');
+      setLoanCalc(null);
+    }
+  }, [depositAmount, state.selectedStrike, state.selectedExpiry, state.selectedOptionData, state.selectedCollateral, state.settings.maxApr]);
 
   const handleCancel = async () => {
     if (!state.activeLoanRequestId) return;
@@ -46,12 +73,7 @@ export default function BorrowPage() {
   };
 
   if (state.activeLoanRequestId) {
-    return (
-      <LoanProgress
-        onCancel={handleCancel}
-        onDismiss={handleDismiss}
-      />
-    );
+    return <LoanProgress onCancel={handleCancel} onDismiss={handleDismiss} />;
   }
 
   return (
@@ -63,6 +85,7 @@ export default function BorrowPage() {
         depositAmount={depositAmount}
         onDepositAmountChange={setDepositAmount}
         receiveAmount={receiveAmount}
+        loanCalc={loanCalc}
       />
       <CollateralModal open={collateralOpen} onClose={() => setCollateralOpen(false)} />
       <StrikeModal open={strikeOpen} onClose={() => setStrikeOpen(false)} />
@@ -71,6 +94,7 @@ export default function BorrowPage() {
         onClose={() => setReviewOpen(false)}
         depositAmount={depositAmount}
         receiveAmount={receiveAmount}
+        loanCalc={loanCalc}
         onConfirmed={(loanId: string) => {
           setActiveRequest(loanId);
           setReviewOpen(false);

@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
-import { LOAN_ASSETS, HOURS_PER_YEAR, type AssetKey } from '@/services/constants';
+import { LOAN_ASSETS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
+import type { LoanCalculation } from '@/types';
 import { DepositPanel } from './DepositPanel';
 import { ReceivePanel } from './ReceivePanel';
 import { PaybackPanel } from './PaybackPanel';
@@ -18,9 +19,10 @@ interface Props {
   depositAmount: string;
   onDepositAmountChange: (v: string) => void;
   receiveAmount: string;
+  loanCalc: LoanCalculation | null;
 }
 
-export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeModal, depositAmount, onDepositAmountChange, receiveAmount }: Props) {
+export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeModal, depositAmount, onDepositAmountChange, receiveAmount, loanCalc }: Props) {
   const { state } = useLoanContext();
   const { service } = useThetanuts();
   const { address } = useAccount();
@@ -39,27 +41,16 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   }, [address, asset, service]);
 
   useEffect(() => {
-    const deposit = parseFloat(depositAmount) || 0;
-    const strike = state.selectedStrike;
-    const expiry = state.selectedExpiry;
-
-    if (deposit <= 0 || !strike || !expiry) {
+    if (!loanCalc || !state.selectedExpiry) {
       setRepayAmount('--');
       setExpiryDate('--');
       setEffectiveApr('--');
       return;
     }
-
-    const receiveEstimate = deposit * strike * 0.95;
-    const repay = deposit * strike;
-    const now = Math.floor(Date.now() / 1000);
-    const hoursToExpiry = (expiry - now) / 3600;
-    const apr = ((repay / receiveEstimate - 1) * HOURS_PER_YEAR) / hoursToExpiry * 100;
-
-    setRepayAmount(`${repay.toFixed(2)} USDC`);
-    setExpiryDate(formatDate(expiry));
-    setEffectiveApr(`${apr.toFixed(1)}%`);
-  }, [depositAmount, state.selectedStrike, state.selectedExpiry]);
+    setRepayAmount(`${loanCalc.repayFormatted} USDC`);
+    setExpiryDate(formatDate(state.selectedExpiry));
+    setEffectiveApr(`${loanCalc.aprFormatted}%`);
+  }, [loanCalc, state.selectedExpiry]);
 
   const canReview = receiveAmount !== '' && state.selectedStrike && state.selectedExpiry;
 

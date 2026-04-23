@@ -7,16 +7,18 @@ import { useThetanuts } from '@/context/ThetanutsContext';
 import { LOAN_ASSETS, LOAN_COORDINATOR_ADDRESS, STRIKE_DECIMALS, USDC_ADDRESS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
 import { ethers } from 'ethers';
+import type { LoanCalculation } from '@/types';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   depositAmount: string;
   receiveAmount: string;
+  loanCalc: LoanCalculation | null;
   onConfirmed: (loanId: string) => void;
 }
 
-export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onConfirmed }: Props) {
+export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanCalc, onConfirmed }: Props) {
   const { state, upsertLoan } = useLoanContext();
   const { service } = useThetanuts();
   const [submitting, setSubmitting] = useState(false);
@@ -28,14 +30,13 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onCon
   if (!asset || !strike || !expiry) return null;
 
   const deposit = parseFloat(depositAmount) || 0;
-  const repay = deposit * strike;
 
   async function confirm() {
     setSubmitting(true);
     try {
       const collateralAmount = ethers.parseUnits(deposit.toString(), asset.decimals);
       const strikeBig = BigInt(Math.round(strike! * 10 ** STRIKE_DECIMALS));
-      const minSettlement = ethers.parseUnits(receiveAmount || '0', 6);
+      const minSettlement = loanCalc ? loanCalc.finalLoanAmount : ethers.parseUnits(receiveAmount || '0', 6);
 
       const { receipt } = await service.requestLoan({
         assetKey: state.selectedCollateral as AssetKey,
@@ -89,12 +90,21 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onCon
     }
   }
 
-  const rows = [
+  const rows = loanCalc ? [
+    ['Deposit', `${deposit} ${asset.symbol}`],
+    ['Receive', `${loanCalc.receiveFormatted} USDC`],
+    ['Strike', `$${strike.toLocaleString()}${loanCalc.isPromo ? ' 🔥' : ''}`],
+    ['Expiry', formatDate(expiry)],
+    ['Repayment', `${loanCalc.repayFormatted} USDC`],
+    ['Option Premium', `${loanCalc.optionCostFormatted} USDC${loanCalc.isPromo ? ' (waived)' : ''}`],
+    ['Borrowing Fee', `${loanCalc.capitalCostFormatted} USDC`],
+    ['Protocol Fee', `${loanCalc.protocolFeeFormatted} USDC`],
+    ['Effective APR', `${loanCalc.aprFormatted}%`],
+  ] : [
     ['Deposit', `${deposit} ${asset.symbol}`],
     ['Receive', `${receiveAmount} USDC`],
     ['Strike', `$${strike.toLocaleString()}`],
     ['Expiry', formatDate(expiry)],
-    ['Repayment', `${repay.toFixed(2)} USDC`],
   ];
 
   return (
