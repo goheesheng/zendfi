@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 :root {
   --zend-accent-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), 'EB Garamond', Georgia, serif;
 }
 
 @keyframes slideIn {
@@ -16,6 +18,26 @@
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+@keyframes cloud-drift-1 {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  25% { transform: translateX(60px) translateY(-20px) scale(1.05); }
+  50% { transform: translateX(30px) translateY(15px) scale(0.95); }
+  75% { transform: translateX(-40px) translateY(-10px) scale(1.02); }
+}
+
+@keyframes cloud-drift-2 {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  25% { transform: translateX(-50px) translateY(25px) scale(1.03); }
+  50% { transform: translateX(-20px) translateY(-20px) scale(0.97); }
+  75% { transform: translateX(40px) translateY(10px) scale(1.05); }
+}
+
+@keyframes cloud-drift-3 {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  33% { transform: translateX(45px) translateY(20px) scale(1.04); }
+  66% { transform: translateX(-30px) translateY(-15px) scale(0.96); }
 }
 
 @keyframes pulse-glow {

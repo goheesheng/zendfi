@@ -24,7 +24,8 @@ const config: Config = {
         'xl2': '24px',
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['var(--font-sans)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['var(--font-display)', 'EB Garamond', 'Georgia', 'serif'],
       },
       animation: {
         'logo-scroll': 'logo-scroll 10s linear infinite',

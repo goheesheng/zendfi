@@ -29,6 +29,60 @@ export function Hero() {
         animation: 'gradient-shift 15s ease infinite',
       }}
     >
+      {/* Floating Cloud Layers */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Cloud 1 - large, slow drift */}
+        <div
+          className="absolute rounded-full opacity-30 blur-3xl"
+          style={{
+            width: '600px', height: '300px',
+            background: 'radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 70%)',
+            top: '10%', left: '-5%',
+            animation: 'cloud-drift-1 25s ease-in-out infinite',
+          }}
+        />
+        {/* Cloud 2 - medium, opposite drift */}
+        <div
+          className="absolute rounded-full opacity-25 blur-3xl"
+          style={{
+            width: '500px', height: '250px',
+            background: 'radial-gradient(ellipse, rgba(255,255,255,0.5) 0%, transparent 70%)',
+            top: '30%', right: '-10%',
+            animation: 'cloud-drift-2 30s ease-in-out infinite',
+          }}
+        />
+        {/* Cloud 3 - small accent cloud */}
+        <div
+          className="absolute rounded-full opacity-20 blur-2xl"
+          style={{
+            width: '400px', height: '200px',
+            background: 'radial-gradient(ellipse, rgba(255,255,255,0.4) 0%, transparent 70%)',
+            bottom: '15%', left: '10%',
+            animation: 'cloud-drift-3 20s ease-in-out infinite',
+          }}
+        />
+        {/* Cloud 4 - warm tint cloud */}
+        <div
+          className="absolute rounded-full opacity-20 blur-3xl"
+          style={{
+            width: '450px', height: '220px',
+            background: 'radial-gradient(ellipse, rgba(253,230,138,0.4) 0%, transparent 70%)',
+            top: '50%', right: '5%',
+            animation: 'cloud-drift-1 35s ease-in-out infinite reverse',
+          }}
+        />
+        {/* Cloud 5 - purple tint */}
+        <div
+          className="absolute rounded-full opacity-15 blur-3xl"
+          style={{
+            width: '350px', height: '180px',
+            background: 'radial-gradient(ellipse, rgba(196,181,253,0.5) 0%, transparent 70%)',
+            top: '5%', right: '20%',
+            animation: 'cloud-drift-3 28s ease-in-out infinite',
+          }}
+        />
+      </div>
+
       {/* Animated SVG Wave Logo */}
       <div className={`mb-8 transition-opacity duration-1000 ${animate ? 'opacity-100' : 'opacity-0'}`}>
         <svg
@@ -80,7 +134,7 @@ export function Hero() {
 
       {/* Headline with staggered fade-in */}
       <h1
-        className={`text-5xl md:text-7xl font-light text-white mb-6 leading-tight transition-all duration-1000 delay-300 ${
+        className={`text-5xl md:text-7xl font-display font-light text-white mb-6 leading-tight transition-all duration-1000 delay-300 ${
           animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
