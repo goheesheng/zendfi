@@ -41,7 +41,7 @@ export function StrikeModal({ open, onClose }: { open: boolean; onClose: () => v
       ) : error ? (
         <p className="text-center text-red-400 py-8 text-sm">{error}</p>
       ) : totalOptions === 0 ? (
-        <p className="text-center text-gray-400 py-8 text-sm">No options available. Try adjusting settings (lower min duration or raise max APR).</p>
+        <p className="text-center text-gray-400 py-8 text-sm">No options available. Try adjusting settings (lower min duration).</p>
       ) : (
         <div className="max-h-96 overflow-y-auto space-y-1">
           {groups.map((group) => (

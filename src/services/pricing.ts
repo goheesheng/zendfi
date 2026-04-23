@@ -126,10 +126,10 @@ export function getFilteredStrikeOptions(
 
     if (receivePerUnit <= 0) continue;
 
-    // Calculate effective APR
+    // Calculate effective APR (includes all costs: interest + option + protocol fee)
+    // Note: maxApr setting controls borrowing interest rate only, NOT a filter on total effective APR
+    // So we don't filter by effectiveApr here — all ITM options with positive receive are shown
     const effectiveApr = (totalCostsPerUnit / receivePerUnit) * (31536000 / (expiryTimestamp - now)) * 100;
-
-    if (!promo && effectiveApr > settings.maxApr) continue;
 
     const option: StrikeOption = {
       strike: parsed.strike,
