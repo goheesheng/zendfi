@@ -85,9 +85,44 @@ export interface StrikeOption {
   strikeFormatted: string;
   expiry: number;
   expiryFormatted: string;
+  expiryLabel: string;          // "28MAR25"
+  underlyingPrice: number;       // current underlying price
+  askPrice: number;              // option ask price
   impliedLoanAmount: number;
   effectiveApr: number;
   isPromo: boolean;
+}
+
+export interface DeribitOptionData {
+  underlying_price: number;
+  ask_price: number;
+  mark_price: number;
+}
+
+export type DeribitPricingMap = Record<string, Record<string, DeribitOptionData>>;
+
+export interface StrikeOptionGroup {
+  expiryLabel: string;
+  expiryFormatted: string;
+  expiryTimestamp: number;
+  options: StrikeOption[];
+}
+
+export interface LoanCalculation {
+  owe: bigint;
+  optionCost: bigint;
+  capitalCost: bigint;
+  protocolFee: bigint;
+  totalCosts: bigint;
+  finalLoanAmount: bigint;
+  effectiveApr: number;
+  isPromo: boolean;
+  receiveFormatted: string;
+  repayFormatted: string;
+  optionCostFormatted: string;
+  capitalCostFormatted: string;
+  protocolFeeFormatted: string;
+  aprFormatted: string;
 }
 
 export type TabId = 'borrow' | 'loans' | 'history' | 'lend';

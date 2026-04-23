@@ -46,3 +46,17 @@ export const LOAN_ASSETS = {
 } as const;
 
 export type AssetKey = keyof typeof LOAN_ASSETS;
+
+export const PRICING_API_URL = 'https://pricing.thetanuts.finance/all';
+
+export const PROMO_CONFIG = {
+  enabled: true,
+  minDaysToExpiry: 90,
+  maxLtvPercent: 50,
+  optionPremiumWaived: true,
+  promoBorrowingFeePercent: 5.68,
+  maxPerPersonUsd: 250000,
+  maxTotalUsd: 2000000,
+} as const;
+
+export const PROTOCOL_FEE_BPS = 4;
