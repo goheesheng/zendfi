@@ -7,6 +7,7 @@ import { LoanProvider } from '@/context/LoanContext';
 import { ThetanutsProvider } from '@/context/ThetanutsContext';
 import { Header } from '@/components/app/Header';
 import { TabNav } from '@/components/app/TabNav';
+import { SettingsModal } from '@/components/app/modals/SettingsModal';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { setTheme } = useTheme();
@@ -27,6 +28,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               {children}
             </div>
           </main>
+          <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
         </ThetanutsProvider>
       </LoanProvider>
     </Providers>
