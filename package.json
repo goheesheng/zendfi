@@ -2,19 +2,32 @@
   "name": "zendfi-with-sdk",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "description": "ZendFi - Non-liquidatable crypto lending powered by Thetanuts SDK",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2",
+    "@rainbow-me/rainbowkit": "2",
+    "@tanstack/react-query": "5",
     "@thetanuts-finance/thetanuts-client": "latest",
-    "ethers": "^6.13.0"
+    "ethers": "^6.13.0",
+    "next": "14",
+    "next-themes": "^0.3",
+    "react": "18",
+    "react-dom": "18",
+    "viem": "2",
+    "wagmi": "2"
   },
   "devDependencies": {
-    "typescript": "^5.5.0",
-    "vite": "^5.4.0"
+    "@types/react": "18",
+    "@types/react-dom": "18",
+    "autoprefixer": "^10",
+    "postcss": "^8",
+    "tailwindcss": "^3.4",
+    "typescript": "^5.5.0"
   }
 }
