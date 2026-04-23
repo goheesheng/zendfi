@@ -1,9 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const backers = ['Polychain Capital', 'Deribit', 'QCP', 'Jump'];
+const backers = [
+  { name: 'Polychain Capital', logo: '/investors/polychain.svg', width: 140, height: 40 },
+  { name: 'Deribit', logo: '/investors/deribit.svg', width: 100, height: 40 },
+  { name: 'QCP', logo: '/investors/qcp.svg', width: 40, height: 40 },
+  { name: 'Jump', logo: '/investors/jump.svg', width: 80, height: 40 },
+];
 
 export function Hero() {
   const [animate, setAnimate] = useState(false);
@@ -116,13 +122,19 @@ export function Hero() {
           animate ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <p className="text-xs tracking-widest text-white/50 uppercase mb-4">Backed by</p>
-        <div className="overflow-hidden max-w-lg mx-auto">
-          <div className="flex animate-logo-scroll">
-            {[...backers, ...backers].map((name, i) => (
-              <span key={i} className="text-white/40 text-sm font-medium mx-8 whitespace-nowrap">
-                {name}
-              </span>
+        <p className="text-xs tracking-widest text-white/50 uppercase mb-6">Backed by</p>
+        <div className="overflow-hidden max-w-2xl mx-auto">
+          <div className="flex animate-logo-scroll items-center">
+            {[...backers, ...backers].map((backer, i) => (
+              <div key={i} className="mx-10 shrink-0 opacity-50 hover:opacity-80 transition-opacity duration-300">
+                <Image
+                  src={backer.logo}
+                  alt={backer.name}
+                  width={backer.width}
+                  height={backer.height}
+                  className="h-8 w-auto brightness-0 invert"
+                />
+              </div>
             ))}
           </div>
         </div>
