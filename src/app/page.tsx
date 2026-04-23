@@ -1,9 +1,25 @@
+import { Navbar } from '@/components/landing/Navbar';
+import { Hero } from '@/components/landing/Hero';
+import { Features } from '@/components/landing/Features';
+import { HowItWorks } from '@/components/landing/HowItWorks';
+import { Comparison } from '@/components/landing/Comparison';
+import { FAQ } from '@/components/landing/FAQ';
+import { TrustBar } from '@/components/landing/TrustBar';
+import { CTA } from '@/components/landing/CTA';
+import { Footer } from '@/components/landing/Footer';
+
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-white dark:bg-zend-bg">
-      <div className="flex items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold">Zend Finance</h1>
-      </div>
-    </main>
+    <>
+      <Navbar />
+      <Hero />
+      <Features />
+      <HowItWorks />
+      <Comparison />
+      <FAQ />
+      <TrustBar />
+      <CTA />
+      <Footer />
+    </>
   );
 }
