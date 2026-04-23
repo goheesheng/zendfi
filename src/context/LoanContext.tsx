@@ -23,6 +23,7 @@ interface LoanState {
   selectedCollateral: 'WETH' | 'CBBTC';
   selectedStrike: number | null;
   selectedExpiry: number | null;
+  selectedOptionData: { askPrice: number; underlyingPrice: number; expiryLabel: string } | null;  // NEW
   settings: UserSettings;
 }
 
@@ -39,7 +40,8 @@ type LoanAction =
   | { type: 'SET_EXPIRY'; expiry: number | null }
   | { type: 'UPDATE_SETTINGS'; settings: Partial<UserSettings> }
   | { type: 'CLEAR_ALL' }
-  | { type: 'LOAD_STATE'; loans: Map<string, Loan>; activeLoanRequestId: string | null };
+  | { type: 'LOAD_STATE'; loans: Map<string, Loan>; activeLoanRequestId: string | null }
+  | { type: 'SET_OPTION_DATA'; data: { askPrice: number; underlyingPrice: number; expiryLabel: string } | null };
 
 // ─── Default settings ───
 
@@ -59,6 +61,7 @@ const initialState: LoanState = {
   selectedCollateral: 'WETH',
   selectedStrike: null,
   selectedExpiry: null,
+  selectedOptionData: null,
   settings: DEFAULT_SETTINGS,
 };
 
@@ -129,7 +132,7 @@ function loanReducer(state: LoanState, action: LoanAction): LoanState {
       return { ...state, activeLoanRequestId: action.id };
 
     case 'SET_COLLATERAL':
-      return { ...state, selectedCollateral: action.collateral };
+      return { ...state, selectedCollateral: action.collateral, selectedStrike: null, selectedExpiry: null, selectedOptionData: null };
 
     case 'SET_STRIKE':
       return { ...state, selectedStrike: action.strike };
@@ -145,6 +148,9 @@ function loanReducer(state: LoanState, action: LoanAction): LoanState {
 
     case 'LOAD_STATE':
       return { ...state, loans: action.loans, activeLoanRequestId: action.activeLoanRequestId };
+
+    case 'SET_OPTION_DATA':
+      return { ...state, selectedOptionData: action.data };
 
     default:
       return state;
@@ -242,6 +248,7 @@ interface LoanContextValue {
   getActiveLoans: () => Loan[];
   getHistoryLoans: () => Loan[];
   getLendingOpportunities: (address?: string) => Loan[];
+  setOptionData: (data: { askPrice: number; underlyingPrice: number; expiryLabel: string } | null) => void;
 }
 
 // ─── Context ───
@@ -318,6 +325,8 @@ export function LoanProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
+  const setOptionData = useCallback((data: { askPrice: number; underlyingPrice: number; expiryLabel: string } | null) => dispatch({ type: 'SET_OPTION_DATA', data }), []);
+
   // ─── Computed getters ───
 
   const getActiveLoans = useCallback((): Loan[] => {
@@ -360,6 +369,7 @@ export function LoanProvider({ children }: { children: ReactNode }) {
     getActiveLoans,
     getHistoryLoans,
     getLendingOpportunities,
+    setOptionData,
   };
 
   return <LoanContext.Provider value={value}>{children}</LoanContext.Provider>;

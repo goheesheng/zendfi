@@ -21,7 +21,8 @@ import {
   DEFAULT_OFFER_DURATION_SECONDS,
   type AssetKey,
 } from './constants';
-import type { Loan, OfferInfo, LoanStatus, StrikeOption } from '../types';
+import type { Loan, OfferInfo, LoanStatus, StrikeOption, DeribitPricingMap, StrikeOptionGroup, UserSettings } from '../types';
+import { fetchDeribitPricing, getFilteredStrikeOptions } from './pricing';
 
 export class ThetanutsService {
   private client: ThetanutsClient;
@@ -30,6 +31,8 @@ export class ThetanutsService {
   private factoryRead: Contract;
   private signer: JsonRpcSigner | null = null;
   private userAddress: string | null = null;
+  private pricingCache: { data: DeribitPricingMap; fetchedAt: number } | null = null;
+  private readonly PRICING_CACHE_TTL = 30_000;
 
   constructor(provider: JsonRpcProvider) {
     // Initialize read-only Thetanuts client
@@ -296,6 +299,23 @@ export class ThetanutsService {
 
   // ─── Pricing Helpers ───
 
+  async fetchPricing(): Promise<DeribitPricingMap> {
+    if (this.pricingCache && Date.now() - this.pricingCache.fetchedAt < this.PRICING_CACHE_TTL) {
+      return this.pricingCache.data;
+    }
+    const data = await fetchDeribitPricing();
+    this.pricingCache = { data, fetchedAt: Date.now() };
+    return data;
+  }
+
+  async getGroupedStrikeOptions(
+    assetKey: AssetKey,
+    settings: UserSettings
+  ): Promise<StrikeOptionGroup[]> {
+    const pricing = await this.fetchPricing();
+    return getFilteredStrikeOptions(pricing, assetKey, settings);
+  }
+
   /** Get available strike options for an asset, filtering by user settings */
   async getStrikeOptions(
     assetKey: AssetKey,
@@ -303,55 +323,15 @@ export class ThetanutsService {
     maxStrikes: number,
     maxApr: number
   ): Promise<StrikeOption[]> {
-    const underlying = assetKey === 'WETH' ? 'ETH' : 'BTC';
-
-    try {
-      const pricing = await this.getPricing(underlying as 'ETH' | 'BTC');
-      const now = Math.floor(Date.now() / 1000);
-      const minExpiry = now + minDays * 86400;
-
-      const options: StrikeOption[] = [];
-
-      for (const [key, data] of Object.entries(pricing)) {
-        if (!data || typeof data !== 'object') continue;
-        const pricingData = data as any;
-        const expiry = pricingData.expiry || 0;
-        if (expiry < minExpiry) continue;
-
-        const strike = pricingData.strike || 0;
-        const price = pricingData.price || 0;
-        if (strike <= 0 || price <= 0) continue;
-
-        // Calculate implied loan amount and effective APR
-        const daysToExpiry = (expiry - now) / 86400;
-        const hoursToExpiry = daysToExpiry * 24;
-        const impliedLoanAmount = price; // Simplified
-        const effectiveApr = ((strike / price - 1) * HOURS_PER_YEAR) / hoursToExpiry * 100;
-
-        if (effectiveApr > maxApr) continue;
-
-        options.push({
-          strike,
-          strikeFormatted: '$' + strike.toLocaleString(),
-          expiry,
-          expiryFormatted: new Date(expiry * 1000).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }),
-          impliedLoanAmount,
-          effectiveApr: Math.round(effectiveApr * 100) / 100,
-          isPromo: false,
-        });
-      }
-
-      // Sort and limit
-      options.sort((a, b) => b.strike - a.strike);
-      return options.slice(0, maxStrikes);
-    } catch (error) {
-      console.error('Failed to fetch pricing:', error);
-      return [];
-    }
+    const settings: UserSettings = {
+      minDurationDays: minDays,
+      maxStrikes,
+      sortOrder: 'highestStrike',
+      maxApr,
+      keepOrderOpen: true,
+    };
+    const groups = await this.getGroupedStrikeOptions(assetKey, settings);
+    return groups.flatMap((g) => g.options);
   }
 
   // ─── WebSocket (via SDK) ───
