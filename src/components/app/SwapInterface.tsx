@@ -2,15 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useLoanContext } from '@/context/LoanContext';
-import { useThetanuts } from '@/context/ThetanutsContext';
 import { LOAN_ASSETS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
 import type { LoanCalculation } from '@/types';
 import { DepositPanel } from './DepositPanel';
 import { ReceivePanel } from './ReceivePanel';
 import { PaybackPanel } from './PaybackPanel';
-import { useAccount } from 'wagmi';
-import { ethers } from 'ethers';
 import { useBalances } from '@/hooks/useBalances';
 
 interface Props {
@@ -25,22 +22,12 @@ interface Props {
 
 export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeModal, depositAmount, onDepositAmountChange, receiveAmount, loanCalc }: Props) {
   const { state } = useLoanContext();
-  const { service } = useThetanuts();
-  const { address } = useAccount();
-  const { mmLiquidity } = useBalances();
-  const [balance, setBalance] = useState('--');
+  const { collateralBalance, mmLiquidity } = useBalances();
   const [repayAmount, setRepayAmount] = useState('--');
   const [expiryDate, setExpiryDate] = useState('--');
   const [effectiveApr, setEffectiveApr] = useState('--');
 
   const asset = LOAN_ASSETS[state.selectedCollateral as AssetKey];
-
-  useEffect(() => {
-    if (!address || !asset) return;
-    service.getBalance(asset.collateral).then((bal) => {
-      setBalance(parseFloat(ethers.formatUnits(bal, asset.decimals)).toFixed(6));
-    }).catch(() => setBalance('--'));
-  }, [address, asset, service]);
 
   useEffect(() => {
     if (!loanCalc || !state.selectedExpiry) {
@@ -68,7 +55,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <DepositPanel
         amount={depositAmount}
         onAmountChange={onDepositAmountChange}
-        balance={balance}
+        balance={collateralBalance}
         onOpenCollateralModal={onOpenCollateralModal}
       />
 

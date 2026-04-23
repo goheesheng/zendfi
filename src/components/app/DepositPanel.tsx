@@ -34,8 +34,16 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
           <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
         </button>
       </div>
-      <div className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-        Balance: {balance} {asset.symbol}
+      <div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 mt-2">
+        <span>Balance: {balance} {asset.symbol}</span>
+        {balance !== '--' && (
+          <button
+            onClick={() => onAmountChange(balance)}
+            className="text-zend-accent hover:text-zend-accent-hover font-semibold transition-colors"
+          >
+            MAX
+          </button>
+        )}
       </div>
     </div>
   );
