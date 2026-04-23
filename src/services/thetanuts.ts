@@ -364,22 +364,4 @@ export class ThetanutsService {
     return this.client.ws.subscribePrices(callback, asset);
   }
 
-  // ─── Utility ───
-
-  formatStrike(strike: bigint): string {
-    return (Number(strike) / 10 ** STRIKE_DECIMALS).toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
-  }
-
-  formatUsdc(amount: bigint): string {
-    return (Number(amount) / 1e6).toFixed(2);
-  }
-
-  calculateEffectiveApr(receiveAmount: bigint, repayAmount: bigint, hoursToExpiry: number): number {
-    if (receiveAmount === 0n || hoursToExpiry <= 0) return 0;
-    const ratio = Number(repayAmount) / Number(receiveAmount);
-    return ((ratio - 1) * HOURS_PER_YEAR) / hoursToExpiry * 100;
-  }
 }
