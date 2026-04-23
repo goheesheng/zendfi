@@ -73,7 +73,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -81,7 +81,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -91,7 +91,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-gradient-to-br from-indigo-400 to-zend-accent hover:from-indigo-500 hover:to-zend-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+        className={`mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-gradient-to-br from-indigo-400 to-zend-accent hover:from-indigo-500 hover:to-zend-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all ${canReview ? 'animate-pulse-glow' : ''}`}
       >
         Review
       </button>

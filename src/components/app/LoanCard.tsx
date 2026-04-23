@@ -28,7 +28,7 @@ export function LoanCard({ loan, onExercise, onDoNotExercise, onCancel }: Props)
   const displayStatus = inExerciseWindow ? 'action' : loan.status;
 
   return (
-    <div className="bg-gray-50 dark:bg-zend-card rounded-2xl p-5 border border-gray-200 dark:border-zend-border mb-3">
+    <div className="bg-gray-50 dark:bg-zend-card rounded-2xl p-5 border border-gray-200 dark:border-zend-border mb-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex justify-between items-center mb-3">
         <span className="font-semibold text-gray-900 dark:text-white">{parseFloat(collateral).toFixed(6)} {symbol}</span>
         <Badge status={displayStatus} />
