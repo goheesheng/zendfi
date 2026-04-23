@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.thetanuts-keys/
+*.local
+.env
+.env.*

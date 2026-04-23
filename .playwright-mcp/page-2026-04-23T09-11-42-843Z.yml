@@ -1,0 +1,192 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Zend Finance
+        - link "Launch App" [ref=e7] [cursor=pointer]:
+          - /url: https://app.zend.fi
+    - img
+    - generic [ref=e10]:
+      - heading "Borrow Without Liquidation Risk" [level=1] [ref=e12]:
+        - text: Borrow Without
+        - text: Liquidation Risk
+      - paragraph [ref=e13]: Fixed terms. Predictable repayment. Peace of mind.
+      - link "Launch App" [ref=e14] [cursor=pointer]:
+        - /url: https://app.zend.fi
+        - text: Launch App
+        - img [ref=e15]
+      - generic [ref=e17]:
+        - paragraph [ref=e18]: Backed by
+        - generic [ref=e20]:
+          - img "Polychain Capital" [ref=e22]
+          - img "Deribit" [ref=e24]
+          - img "QCP" [ref=e26]
+          - generic:
+            - img "Jump"
+          - img "Polychain Capital" [ref=e28]
+          - img "Deribit" [ref=e30]
+          - img "QCP" [ref=e32]
+          - generic:
+            - img "Jump"
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - heading "Borrowing, reimagined" [level=2] [ref=e36]
+        - paragraph [ref=e37]: Traditional DeFi lending means constant liquidation anxiety. Zend changes everything.
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - img [ref=e41]
+          - heading "No Liquidations" [level=3] [ref=e43]
+          - paragraph [ref=e44]: Your collateral is protected. No matter how the market moves, you'll never face forced liquidation.
+        - generic [ref=e45]:
+          - img [ref=e47]
+          - heading "Fixed Terms" [level=3] [ref=e49]
+          - paragraph [ref=e50]: Know exactly what you owe from day one. No surprises, no variable rates eating into your position.
+        - generic [ref=e51]:
+          - img [ref=e53]
+          - heading "Competitive Rates" [level=3] [ref=e55]
+          - paragraph [ref=e56]: Lenders compete to offer you the best rates through our RFQ system, driving down your borrowing costs.
+        - generic [ref=e57]:
+          - img [ref=e59]
+          - heading "Options Protection" [level=3] [ref=e61]
+          - paragraph [ref=e62]: Built-in put options give you the right to reclaim your collateral at a known price, no matter what.
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - heading "How it works" [level=2] [ref=e66]
+        - paragraph [ref=e67]: Four simple steps to liquidation-free borrowing
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e71]: "01"
+          - generic [ref=e72]:
+            - heading "Deposit Collateral" [level=3] [ref=e73]
+            - paragraph [ref=e74]: Deposit ETH or BTC as collateral. Your assets remain yours — we never take custody.
+        - generic [ref=e75]:
+          - generic [ref=e77]: "02"
+          - generic [ref=e78]:
+            - heading "Request a Quote" [level=3] [ref=e79]
+            - paragraph [ref=e80]: Specify your loan amount and term. Lenders compete to offer you the best rates.
+        - generic [ref=e81]:
+          - generic [ref=e83]: "03"
+          - generic [ref=e84]:
+            - heading "Accept & Borrow" [level=3] [ref=e85]
+            - paragraph [ref=e86]: Choose the best offer and receive your loan instantly. Fixed terms, no surprises.
+        - generic [ref=e87]:
+          - generic [ref=e89]: "04"
+          - generic [ref=e90]:
+            - heading "Repay & Reclaim" [level=3] [ref=e91]
+            - paragraph [ref=e92]: Repay your loan at maturity to reclaim your collateral. Or walk away — your choice.
+      - paragraph [ref=e94]: Built on Thetanuts V4 RFQ — enterprise-grade options infrastructure
+    - generic [ref=e96]:
+      - generic [ref=e97]:
+        - heading "Zend vs Traditional DeFi Lending" [level=2] [ref=e98]
+        - paragraph [ref=e99]: See why borrowers are switching to liquidation-free loans
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic [ref=e102]: Feature
+          - generic [ref=e103]: Zend
+          - generic [ref=e104]: Others
+        - generic [ref=e105]:
+          - generic [ref=e106]: Liquidation Risk
+          - generic [ref=e108]:
+            - img [ref=e109]
+            - text: None
+          - generic [ref=e111]: High
+        - generic [ref=e112]:
+          - generic [ref=e113]: Repayment Terms
+          - generic [ref=e115]:
+            - img [ref=e116]
+            - text: Fixed
+          - generic [ref=e118]: Variable
+        - generic [ref=e119]:
+          - generic [ref=e120]: Rate Certainty
+          - generic [ref=e122]:
+            - img [ref=e123]
+            - text: Locked in
+          - generic [ref=e125]: Fluctuates
+        - generic [ref=e126]:
+          - generic [ref=e127]: Margin Calls
+          - generic [ref=e129]:
+            - img [ref=e130]
+            - text: Never
+          - generic [ref=e132]: Frequent
+        - generic [ref=e133]:
+          - generic [ref=e134]: Price Protection
+          - generic [ref=e136]:
+            - img [ref=e137]
+            - text: Built-in options
+          - generic [ref=e139]: None
+        - generic [ref=e140]:
+          - generic [ref=e141]: Custody
+          - generic [ref=e143]: Non-custodial
+          - generic [ref=e144]: Non-custodial
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - heading "Frequently asked questions" [level=2] [ref=e148]
+        - paragraph [ref=e149]: Everything you need to know about liquidation-free borrowing
+      - generic [ref=e150]:
+        - generic [ref=e151]:
+          - button "How is liquidation-free borrowing possible?" [ref=e152]:
+            - generic [ref=e153]: How is liquidation-free borrowing possible?
+            - img [ref=e154]
+          - paragraph [ref=e157]: When you deposit collateral, lenders simultaneously sell you a put option at your loan's strike price. This gives you the right — but not obligation — to sell your collateral at that price. If the market drops, you can simply walk away, keeping your loan while the lender keeps your collateral. No forced liquidations, ever.
+        - generic [ref=e158]:
+          - button "What happens if my collateral value drops?" [ref=e159]:
+            - generic [ref=e160]: What happens if my collateral value drops?
+            - img [ref=e161]
+          - paragraph [ref=e163]: Nothing happens to your position. Unlike traditional lending where a price drop triggers liquidation, Zend's options-based structure means you're protected. You can choose to repay and reclaim your collateral, or walk away if it's worth less than your loan.
+        - generic [ref=e164]:
+          - button "What collateral types are supported?" [ref=e165]:
+            - generic [ref=e166]: What collateral types are supported?
+            - img [ref=e167]
+          - paragraph [ref=e169]: Zend currently supports ETH and BTC as collateral. We're working on expanding to additional assets based on liquidity and demand.
+        - generic [ref=e170]:
+          - button "How are loan terms determined?" [ref=e171]:
+            - generic [ref=e172]: How are loan terms determined?
+            - img [ref=e173]
+          - paragraph [ref=e175]: You specify your desired loan amount and term, then lenders compete to offer you rates through our RFQ (Request for Quote) system. You choose the best offer — no negotiation required.
+        - generic [ref=e176]:
+          - button "Is Zend non-custodial?" [ref=e177]:
+            - generic [ref=e178]: Is Zend non-custodial?
+            - img [ref=e179]
+          - paragraph [ref=e181]: Yes. Your collateral is held in smart contracts, not by Zend. You maintain full control and can interact directly with the protocol.
+        - generic [ref=e182]:
+          - button "What blockchain is Zend built on?" [ref=e183]:
+            - generic [ref=e184]: What blockchain is Zend built on?
+            - img [ref=e185]
+          - paragraph [ref=e187]: Zend is built on Thetanuts V4 RFQ infrastructure, leveraging enterprise-grade options mechanics with anti-front-running protection.
+    - generic [ref=e190]:
+      - link "Audited" [ref=e191] [cursor=pointer]:
+        - /url: "#"
+        - img [ref=e192]
+        - generic [ref=e194]: Audited
+      - generic [ref=e195]:
+        - img [ref=e196]
+        - generic [ref=e198]: Non-custodial
+      - generic [ref=e199]:
+        - img [ref=e200]
+        - generic [ref=e202]: Built on Thetanuts V4
+      - generic [ref=e203]:
+        - img [ref=e204]
+        - generic [ref=e206]: 24/7 Access
+    - generic [ref=e208]:
+      - generic [ref=e210]:
+        - heading "Ready for peace of mind?" [level=2] [ref=e211]
+        - paragraph [ref=e212]: Join thousands of borrowers who sleep soundly knowing their positions are safe.
+        - link "Start Borrowing" [ref=e213] [cursor=pointer]:
+          - /url: https://app.zend.fi
+          - text: Start Borrowing
+          - img [ref=e214]
+      - generic [ref=e218]:
+        - generic [ref=e219]:
+          - img "Zend" [ref=e220]
+          - generic [ref=e221]: Zend Finance
+        - generic [ref=e222]:
+          - link "Docs" [ref=e223] [cursor=pointer]:
+            - /url: https://docs.zend.fi
+          - link [ref=e224] [cursor=pointer]:
+            - /url: https://twitter.com/zaborrowfi
+            - img [ref=e225]
+          - link [ref=e227] [cursor=pointer]:
+            - /url: https://discord.gg/zend
+            - img [ref=e228]
+        - paragraph [ref=e230]: © 2026 Zend Finance
+  - alert [ref=e231]
