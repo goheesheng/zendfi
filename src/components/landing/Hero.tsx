@@ -1,16 +1,30 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+const backers = ['Polychain Capital', 'Deribit', 'QCP', 'Jump'];
 
 export function Hero() {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation after mount
+    const timer = setTimeout(() => setAnimate(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section
-      className="relative flex min-h-screen flex-col items-center justify-center text-center px-6"
+      className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden"
       style={{
-        background:
-          'linear-gradient(135deg, #c4b5fd 0%, #93c5fd 25%, #e0c3fc 50%, #fde68a 75%, #93c5fd 100%)',
+        background: 'linear-gradient(135deg, #c4b5fd 0%, #93c5fd 20%, #e0c3fc 40%, #fde68a 60%, #bfdbfe 80%, #c4b5fd 100%)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient-shift 15s ease infinite',
       }}
     >
-      {/* Wave logo SVG */}
-      <div className="mb-8">
+      {/* Animated SVG Wave Logo */}
+      <div className={`mb-8 transition-opacity duration-1000 ${animate ? 'opacity-100' : 'opacity-0'}`}>
         <svg
           width="72"
           height="48"
@@ -25,6 +39,11 @@ export function Hero() {
             strokeWidth="4"
             strokeLinecap="round"
             fill="none"
+            style={{
+              strokeDasharray: 120,
+              strokeDashoffset: animate ? 0 : 120,
+              transition: 'stroke-dashoffset 1s ease 0.2s',
+            }}
           />
           <path
             d="M4 24 C12 16, 20 32, 28 24 C36 16, 44 32, 52 24 C60 16, 68 32, 72 24"
@@ -32,6 +51,11 @@ export function Hero() {
             strokeWidth="4"
             strokeLinecap="round"
             fill="none"
+            style={{
+              strokeDasharray: 120,
+              strokeDashoffset: animate ? 0 : 120,
+              transition: 'stroke-dashoffset 1s ease 0.4s',
+            }}
           />
           <path
             d="M4 36 C12 28, 20 44, 28 36 C36 28, 44 44, 52 36 C60 28, 68 44, 72 36"
@@ -39,39 +63,68 @@ export function Hero() {
             strokeWidth="4"
             strokeLinecap="round"
             fill="none"
+            style={{
+              strokeDasharray: 120,
+              strokeDashoffset: animate ? 0 : 120,
+              transition: 'stroke-dashoffset 1s ease 0.6s',
+            }}
           />
         </svg>
       </div>
 
-      {/* Headline */}
-      <h1 className="text-5xl md:text-7xl font-light text-white leading-tight mb-6">
+      {/* Headline with staggered fade-in */}
+      <h1
+        className={`text-5xl md:text-7xl font-light text-white mb-6 leading-tight transition-all duration-1000 delay-300 ${
+          animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         Borrow Without
         <br />
         Liquidation Risk
       </h1>
 
-      {/* Subtitle */}
-      <p className="text-lg text-white/70 mb-10 max-w-md">
+      <p
+        className={`text-lg text-white/70 mb-10 max-w-md transition-all duration-1000 delay-500 ${
+          animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         Fixed terms. Predictable repayment. Peace of mind.
       </p>
 
-      {/* CTA */}
       <Link
         href="/app"
-        className="inline-block px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl shadow-lg text-base hover:shadow-xl transition-shadow"
+        className={`group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-gray-900 font-semibold text-lg shadow-lg transition-all duration-300 hover:bg-white/90 hover:shadow-xl hover:-translate-y-0.5 ${
+          animate
+            ? 'opacity-100 translate-y-0 transition-all duration-1000 delay-700'
+            : 'opacity-0 translate-y-8 transition-all duration-1000 delay-700'
+        }`}
       >
-        Launch App →
+        Launch App
+        <svg
+          className="w-5 h-5 transition-transform group-hover:translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       </Link>
 
-      {/* Backed by */}
-      <div className="mt-16">
-        <p className="text-white/40 text-sm uppercase tracking-widest mb-4">Backed by</p>
-        <div className="flex flex-wrap items-center justify-center gap-8">
-          {['Polychain Capital', 'Deribit', 'QCP', 'Jump'].map((name) => (
-            <span key={name} className="text-white/40 text-sm font-medium">
-              {name}
-            </span>
-          ))}
+      {/* Backed By Marquee */}
+      <div
+        className={`mt-16 w-full transition-all duration-1000 delay-1000 ${
+          animate ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <p className="text-xs tracking-widest text-white/50 uppercase mb-4">Backed by</p>
+        <div className="overflow-hidden max-w-lg mx-auto">
+          <div className="flex animate-logo-scroll">
+            {[...backers, ...backers].map((name, i) => (
+              <span key={i} className="text-white/40 text-sm font-medium mx-8 whitespace-nowrap">
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

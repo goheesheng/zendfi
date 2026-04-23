@@ -1,3 +1,5 @@
+import { ScrollReveal } from './ScrollReveal';
+
 const steps = [
   {
     number: '01',
@@ -29,28 +31,34 @@ export function HowItWorks() {
   return (
     <section className="bg-gray-50 py-24 px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">How it works</h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Four simple steps from collateral to cash — with no liquidation risk along the way.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How it works</h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Four simple steps from collateral to cash — with no liquidation risk along the way.
+            </p>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {steps.map((step) => (
-            <div key={step.number} className="flex flex-col items-start">
-              <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mb-4 flex-shrink-0">
-                {step.number}
+          {steps.map((step, i) => (
+            <ScrollReveal key={step.number} delay={i * 100}>
+              <div className="flex flex-col items-start">
+                <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mb-4 flex-shrink-0">
+                  {step.number}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{step.description}</p>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{step.description}</p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-400">
-          Built on Thetanuts V4 RFQ — enterprise-grade options infrastructure
-        </p>
+        <ScrollReveal delay={500}>
+          <p className="text-center text-sm text-gray-400">
+            Built on Thetanuts V4 RFQ — enterprise-grade options infrastructure
+          </p>
+        </ScrollReveal>
       </div>
     </section>
   );

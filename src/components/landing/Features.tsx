@@ -1,3 +1,5 @@
+import { ScrollReveal } from './ScrollReveal';
+
 const features = [
   {
     icon: '🛡️',
@@ -29,20 +31,24 @@ export function Features() {
   return (
     <section className="bg-white py-24 px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Borrowing, reimagined</h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Traditional DeFi lending means constant liquidation anxiety. Zend changes everything.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Borrowing, reimagined</h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Traditional DeFi lending means constant liquidation anxiety. Zend changes everything.
+            </p>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {features.map((feature) => (
-            <div key={feature.title} className="bg-gray-50 rounded-2xl p-8">
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-gray-500 leading-relaxed">{feature.description}</p>
-            </div>
+          {features.map((feature, i) => (
+            <ScrollReveal key={feature.title} delay={i * 100}>
+              <div className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-500 leading-relaxed">{feature.description}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

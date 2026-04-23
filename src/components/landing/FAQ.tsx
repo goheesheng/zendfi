@@ -1,6 +1,7 @@
 'use client';
 
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Transition } from '@headlessui/react';
+import { ScrollReveal } from './ScrollReveal';
 
 const faqs = [
   {
@@ -39,39 +40,52 @@ export function FAQ() {
   return (
     <section className="bg-gray-50 py-24 px-6">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently asked questions</h2>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently asked questions</h2>
+          </div>
+        </ScrollReveal>
 
         <div className="space-y-3">
-          {faqs.map((faq) => (
-            <Disclosure key={faq.question}>
-              {({ open }) => (
-                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                  <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left">
-                    <span className="text-gray-900 font-medium">{faq.question}</span>
-                    <svg
-                      className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ml-4 ${
-                        open ? 'rotate-180' : ''
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+          {faqs.map((faq, i) => (
+            <ScrollReveal key={faq.question} delay={i * 60}>
+              <Disclosure>
+                {({ open }) => (
+                  <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                    <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors duration-200">
+                      <span className="text-gray-900 font-medium">{faq.question}</span>
+                      <svg
+                        className={`w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0 ml-4 ${
+                          open ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </Disclosure.Button>
+                    <Transition
+                      enter="transition duration-200 ease-out"
+                      enterFrom="transform scale-y-95 opacity-0"
+                      enterTo="transform scale-y-100 opacity-100"
+                      leave="transition duration-150 ease-in"
+                      leaveFrom="transform scale-y-100 opacity-100"
+                      leaveTo="transform scale-y-95 opacity-0"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </Disclosure.Button>
-                  <Disclosure.Panel className="px-6 pb-5">
-                    <p className="text-gray-500 leading-relaxed">{faq.answer}</p>
-                  </Disclosure.Panel>
-                </div>
-              )}
-            </Disclosure>
+                      <Disclosure.Panel className="px-6 pb-5">
+                        <p className="text-gray-500 leading-relaxed">{faq.answer}</p>
+                      </Disclosure.Panel>
+                    </Transition>
+                  </div>
+                )}
+              </Disclosure>
+            </ScrollReveal>
           ))}
         </div>
       </div>
