@@ -12,7 +12,9 @@ import type {
 // ─── Fetch ───
 
 export async function fetchDeribitPricing(): Promise<DeribitPricingMap> {
-  const response = await fetch(PRICING_API_URL);
+  // Use local API proxy to avoid CORS issues with the external pricing API
+  const url = typeof window !== 'undefined' ? '/api/pricing' : PRICING_API_URL;
+  const response = await fetch(url);
   if (!response.ok) throw new Error(`Pricing API error: ${response.status}`);
   const data = await response.json();
   if (!data || !data.data) throw new Error('Invalid pricing data format');
