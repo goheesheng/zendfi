@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { SwapInterface } from '@/components/app/SwapInterface';
+import { LoanProgress } from '@/components/app/LoanProgress';
 import { CollateralModal } from '@/components/app/modals/CollateralModal';
 import { StrikeModal } from '@/components/app/modals/StrikeModal';
 import { ReviewModal } from '@/components/app/modals/ReviewModal';
 import { useLoanContext } from '@/context/LoanContext';
+import { useThetanuts } from '@/context/ThetanutsContext';
+import { useBalances } from '@/hooks/useBalances';
 
 export default function BorrowPage() {
-  const { state } = useLoanContext();
+  const { state, setActiveRequest } = useLoanContext();
+  const { service } = useThetanuts();
+  useBalances();
   const [depositAmount, setDepositAmount] = useState('0.001');
   const [receiveAmount, setReceiveAmount] = useState('');
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -24,6 +29,30 @@ export default function BorrowPage() {
     }
     setReceiveAmount((deposit * strike * 0.95).toFixed(2));
   }, [depositAmount, state.selectedStrike]);
+
+  const handleCancel = async () => {
+    if (!state.activeLoanRequestId) return;
+    try {
+      await service.cancelLoan(BigInt(state.activeLoanRequestId));
+    } catch (e: any) {
+      console.error('Cancel failed:', e.message);
+    } finally {
+      setActiveRequest(null);
+    }
+  };
+
+  const handleDismiss = () => {
+    setActiveRequest(null);
+  };
+
+  if (state.activeLoanRequestId) {
+    return (
+      <LoanProgress
+        onCancel={handleCancel}
+        onDismiss={handleDismiss}
+      />
+    );
+  }
 
   return (
     <>
@@ -42,7 +71,10 @@ export default function BorrowPage() {
         onClose={() => setReviewOpen(false)}
         depositAmount={depositAmount}
         receiveAmount={receiveAmount}
-        onConfirmed={() => {}}
+        onConfirmed={(loanId: string) => {
+          setActiveRequest(loanId);
+          setReviewOpen(false);
+        }}
       />
     </>
   );

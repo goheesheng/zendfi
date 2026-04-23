@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
-import { LOAN_ASSETS, STRIKE_DECIMALS, type AssetKey } from '@/services/constants';
+import { LOAN_ASSETS, LOAN_COORDINATOR_ADDRESS, STRIKE_DECIMALS, USDC_ADDRESS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
 import { ethers } from 'ethers';
 
@@ -13,11 +13,11 @@ interface Props {
   onClose: () => void;
   depositAmount: string;
   receiveAmount: string;
-  onConfirmed: () => void;
+  onConfirmed: (loanId: string) => void;
 }
 
 export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onConfirmed }: Props) {
-  const { state } = useLoanContext();
+  const { state, upsertLoan } = useLoanContext();
   const { service } = useThetanuts();
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,9 +35,9 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onCon
     try {
       const collateralAmount = ethers.parseUnits(deposit.toString(), asset.decimals);
       const strikeBig = BigInt(Math.round(strike! * 10 ** STRIKE_DECIMALS));
-      const minSettlement = ethers.parseUnits(receiveAmount, 6);
+      const minSettlement = ethers.parseUnits(receiveAmount || '0', 6);
 
-      await service.requestLoan({
+      const { receipt } = await service.requestLoan({
         assetKey: state.selectedCollateral as AssetKey,
         collateralAmount,
         strike: strikeBig,
@@ -46,8 +46,42 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, onCon
         keepOrderOpen: state.settings.keepOrderOpen,
       });
 
+      // Parse quotationId from LoanRequested event in receipt
+      let loanId = '';
+      if (receipt) {
+        const iface = new ethers.Interface([
+          'event LoanRequested(uint256 indexed quotationId, address indexed requester, address collateralToken, address settlementToken, uint256 collateralAmount, uint256 minSettlementAmount, uint256 strike, uint256 expiryTimestamp, uint256 offerEndTimestamp, bool convertToLimitOrder)',
+        ]);
+        for (const log of receipt.logs) {
+          try {
+            const parsed = iface.parseLog(log);
+            if (parsed && parsed.name === 'LoanRequested') {
+              loanId = parsed.args.quotationId.toString();
+              const offerEndTimestamp = Number(parsed.args.offerEndTimestamp);
+              upsertLoan(loanId, {
+                quotationId: parsed.args.quotationId,
+                requester: parsed.args.requester,
+                collateralToken: parsed.args.collateralToken,
+                collateralAmount: parsed.args.collateralAmount,
+                settlementToken: USDC_ADDRESS,
+                strike: parsed.args.strike,
+                expiryTimestamp: expiry!,
+                offerEndTimestamp,
+                minSettlementAmount: parsed.args.minSettlementAmount,
+                status: 'requested',
+                createdAt: Date.now(),
+                offers: [],
+              });
+              break;
+            }
+          } catch {
+            // Not this event
+          }
+        }
+      }
+
       onClose();
-      onConfirmed();
+      onConfirmed(loanId);
     } catch (err: any) {
       alert(err.message || 'Failed to submit loan request');
     } finally {
