@@ -48,6 +48,7 @@ export const LOAN_ASSETS = {
 export type AssetKey = keyof typeof LOAN_ASSETS;
 
 export const PRICING_API_URL = 'https://pricing.thetanuts.finance/all';
+export const LOAN_INDEXER_URL = 'https://zendfi-loan-indexer-v1.devops-118.workers.dev';
 
 export const PROMO_CONFIG = {
   enabled: true,
