@@ -9,7 +9,7 @@ import { CHAIN_ID } from '@/services/constants';
 let _readProvider: JsonRpcProvider | null = null;
 function getReadProvider(): JsonRpcProvider {
   if (!_readProvider) {
-    _readProvider = new JsonRpcProvider('https://mainnet.base.org', CHAIN_ID, {
+    _readProvider = new JsonRpcProvider('https://rpc.ankr.com/base/5e9458e4bf5a4f8893ad36e5422b9e2289cf89f4b5142312bd9b65ea1162234b', CHAIN_ID, {
       staticNetwork: true,
       polling: true,
       pollingInterval: 15000,

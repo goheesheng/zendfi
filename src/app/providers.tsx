@@ -12,7 +12,7 @@ const config = getDefaultConfig({
   projectId: 'aee60801c5765924c0ad1b6c353a416a',
   chains: [base],
   transports: {
-    [base.id]: http('https://mainnet.base.org'),
+    [base.id]: http('https://rpc.ankr.com/base/5e9458e4bf5a4f8893ad36e5422b9e2289cf89f4b5142312bd9b65ea1162234b'),
   },
 });
 
