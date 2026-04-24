@@ -10,9 +10,11 @@ import { TabNav } from '@/components/app/TabNav';
 import { SettingsModal } from '@/components/app/modals/SettingsModal';
 import { ToastProvider } from '@/components/ui/Toast';
 import { useContractEvents } from '@/hooks/useContractEvents';
+import { useLoadPositions } from '@/hooks/useLoadPositions';
 
 function AppInner({ children }: { children: React.ReactNode }) {
   useContractEvents();
+  useLoadPositions();
   return <>{children}</>;
 }
 
