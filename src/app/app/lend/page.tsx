@@ -19,10 +19,14 @@ export default function LendPage() {
     try {
       const res = await fetch(`${LOAN_INDEXER_URL}/api/state`);
       if (!res.ok) throw new Error(`Indexer returned ${res.status}`);
-      const data = (await res.json()) as { loans?: LendingOpportunity[] };
-      const loans: LendingOpportunity[] = Array.isArray(data.loans) ? data.loans : [];
-      // Only show limit orders that haven't been filled yet
-      const limitOrders = loans.filter((l) => l.status === 'limitOrder' || l.convertToLimitOrder);
+      const data = await res.json();
+      // Indexer returns loans as an object keyed by quotationId, not an array
+      const loansObj: Record<string, any> = data.loans || {};
+      const allLoans: LendingOpportunity[] = Object.values(loansObj);
+      // Limit orders = requested + convertToLimitOrder + not yet settled
+      const limitOrders = allLoans.filter(
+        (l) => l.convertToLimitOrder && !l.optionAddress && l.status !== 'settled' && l.status !== 'cancelled'
+      );
       setOpportunities(limitOrders);
     } catch (err: any) {
       setError(err?.message ?? 'Failed to load lending opportunities');
