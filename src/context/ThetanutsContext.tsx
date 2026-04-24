@@ -13,6 +13,7 @@ function getReadProvider(): JsonRpcProvider {
       staticNetwork: true,
       polling: true,
       pollingInterval: 15000,
+      batchMaxCount: 1,  // Base RPC limits to 10 calls per batch — disable batching to avoid errors
     });
   }
   return _readProvider;
