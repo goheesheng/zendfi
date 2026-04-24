@@ -160,49 +160,52 @@ function LendRow({
   return (
     <tr className="border-b border-gray-100 dark:border-zend-border/50 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors">
       {/* Asset */}
-      <td className="py-3 pl-2">
-        <div className="flex items-center gap-2">
-          <span className="text-lg leading-none">{icon}</span>
-          <span className="font-semibold text-gray-900 dark:text-white">{symbol}</span>
+      <td className="py-5 pl-4">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl leading-none">{icon}</span>
+          <div>
+            <span className="font-semibold text-gray-900 dark:text-white text-base">{symbol}</span>
+            <div className="text-[10px] text-white/30 mt-0.5">QID #{opp.quotationId}</div>
+          </div>
         </div>
       </td>
 
       {/* You Provide */}
-      <td className="py-3 text-right">
-        <span className="text-gray-900 dark:text-white font-medium">{lendAmountFormatted}</span>
-        <span className="text-gray-400 dark:text-gray-500 text-xs ml-1">USDC</span>
+      <td className="py-5 text-right">
+        <div className="font-semibold text-gray-900 dark:text-white text-base">{lendAmountFormatted}</div>
+        <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">USDC</div>
       </td>
 
       {/* You Receive (collateral custody) */}
-      <td className="py-3 text-right">
-        <span className="text-gray-900 dark:text-white font-medium">
+      <td className="py-5 text-right">
+        <div className="font-semibold text-gray-900 dark:text-white text-base">
           {Number(collateralFormatted).toFixed(decimals === 18 ? 6 : 8)}
-        </span>
-        <span className="text-gray-400 dark:text-gray-500 text-xs ml-1">{symbol}</span>
+        </div>
+        <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">{symbol}</div>
       </td>
 
       {/* Repayment (OWE) */}
-      <td className="py-3 text-right">
-        <span className="text-gray-900 dark:text-white font-medium">{repaymentFormatted}</span>
-        <span className="text-gray-400 dark:text-gray-500 text-xs ml-1">USDC</span>
+      <td className="py-5 text-right">
+        <div className="font-semibold text-gray-900 dark:text-white text-base">{repaymentFormatted}</div>
+        <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">USDC</div>
       </td>
 
       {/* APR */}
-      <td className="py-3 text-center">
-        <span className={apr > 0 ? 'text-emerald-500 font-semibold' : 'text-gray-400'}>
+      <td className="py-5 text-center">
+        <span className={`text-base font-bold ${apr > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
           {apr > 0 ? `${apr.toFixed(1)}%` : '--'}
         </span>
       </td>
 
       {/* Expiry */}
-      <td className="py-3 text-center">
-        <span className={isExpired ? 'text-red-400' : 'text-gray-600 dark:text-gray-300'}>
+      <td className="py-5 text-center">
+        <span className={`text-sm ${isExpired ? 'text-red-400' : 'text-gray-300'}`}>
           {expiryDate}
         </span>
       </td>
 
       {/* Action */}
-      <td className="py-3 text-center pr-2">
+      <td className="py-5 text-center pr-4">
         {isExpired ? (
           <span className="text-xs text-gray-400">Expired</span>
         ) : !isWalletConnected ? (
@@ -211,7 +214,7 @@ function LendRow({
           <button
             onClick={handleApprove}
             disabled={rowState.approving}
-            className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white text-xs font-semibold transition-colors"
+            className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white text-sm font-semibold transition-colors"
           >
             {rowState.approving ? 'Approving…' : 'Approve USDC'}
           </button>
@@ -219,7 +222,7 @@ function LendRow({
           <button
             onClick={handleLend}
             disabled={rowState.lending}
-            className="px-3 py-1.5 rounded-lg bg-zend-accent hover:bg-zend-accent-hover disabled:opacity-60 text-white text-xs font-semibold transition-colors"
+            className="px-4 py-2.5 rounded-xl bg-zend-accent hover:bg-zend-accent-hover disabled:opacity-60 text-white text-sm font-semibold transition-colors"
           >
             {rowState.lending ? 'Lending…' : 'Lend'}
           </button>
@@ -259,14 +262,14 @@ export function LendTable({ opportunities, loading, onRefresh }: LendTableProps)
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-gray-400 dark:text-gray-500 border-b border-gray-200 dark:border-zend-border bg-gray-50/50 dark:bg-white/[0.02]">
-              <th className="text-left py-3 pl-2 font-medium">Asset</th>
-              <th className="text-right py-3 font-medium">You Provide</th>
-              <th className="text-right py-3 font-medium">You Receive</th>
-              <th className="text-right py-3 font-medium">Repayment</th>
-              <th className="text-center py-3 font-medium">APR</th>
-              <th className="text-center py-3 font-medium">Expiry</th>
-              <th className="text-center py-3 pr-2 font-medium">Action</th>
+            <tr className="text-[11px] uppercase tracking-wider text-white/30 border-b border-white/[0.06] bg-white/[0.02]">
+              <th className="text-left py-4 pl-4 font-medium">Asset</th>
+              <th className="text-right py-4 font-medium">You Provide</th>
+              <th className="text-right py-4 font-medium">You Receive</th>
+              <th className="text-right py-4 font-medium">Repayment</th>
+              <th className="text-center py-4 font-medium">APR</th>
+              <th className="text-center py-4 font-medium">Expiry</th>
+              <th className="text-center py-4 pr-4 font-medium">Action</th>
             </tr>
           </thead>
           <tbody>

@@ -20,24 +20,24 @@ export function HistoryCard({ loan }: { loan: Loan }) {
       : null;
 
   return (
-    <div className="glass-card rounded-2xl p-5 mb-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex justify-between items-center mb-4">
-        <span className="font-semibold text-white">Loan #{loan.quotationId.toString()}</span>
+    <div className="glass-card rounded-2xl p-6 mb-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+      <div className="flex justify-between items-center mb-5">
+        <span className="font-semibold text-white text-xl">Loan #{loan.quotationId.toString()}</span>
         <Badge status={loan.status} />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-white/[0.03] rounded-xl p-3">
-          <div className="text-[10px] uppercase tracking-wider text-white/30 mb-1">Deposited</div>
-          <div className="font-semibold text-white text-sm">{parseFloat(collateral).toFixed(6)} {symbol}</div>
+      <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="bg-white/[0.03] rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-white/30 mb-1.5">Deposited</div>
+          <div className="font-semibold text-white text-base">{parseFloat(collateral).toFixed(6)} {symbol}</div>
         </div>
-        <div className="bg-white/[0.03] rounded-xl p-3">
-          <div className="text-[10px] uppercase tracking-wider text-white/30 mb-1">Borrowed</div>
-          <div className="font-semibold text-white text-sm">{borrowed ? `${borrowed} USDC` : '--'}</div>
+        <div className="bg-white/[0.03] rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-white/30 mb-1.5">Borrowed</div>
+          <div className="font-semibold text-white text-base">{borrowed ? `${borrowed} USDC` : '--'}</div>
         </div>
       </div>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-3 text-sm">
         {strikeNum > 0 && (
           <div className="flex justify-between">
             <span className="text-white/30">Strike</span>
