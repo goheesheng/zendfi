@@ -2,13 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════
+   ZENDFI — "Liquid Night" Design System
+   Premium DeFi aesthetic with glass effects,
+   rich darks, and confident motion.
+   ═══════════════════════════════════════════ */
+
 :root {
-  --zend-accent-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  --zend-accent-gradient: linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%);
+  --zend-glass: rgba(255, 255, 255, 0.03);
+  --zend-glass-border: rgba(255, 255, 255, 0.06);
+  --zend-glass-hover: rgba(255, 255, 255, 0.06);
+  --zend-glow: rgba(99, 102, 241, 0.15);
 }
 
+/* Serif headings with refined tracking */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), 'EB Garamond', Georgia, serif;
+  letter-spacing: -0.01em;
 }
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: white;
+}
+
+/* Glass card utility */
+.glass-card {
+  background: var(--zend-glass);
+  border: 1px solid var(--zend-glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-card:hover {
+  background: var(--zend-glass-hover);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Accent glow on focus for inputs */
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* Custom scrollbar for dark theme */
+.dark ::-webkit-scrollbar {
+  width: 6px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ═══ Keyframes ═══ */
 
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
@@ -18,6 +77,42 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes aurora {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateX(-10%) rotate(0deg) scale(1);
+  }
+  33% {
+    opacity: 0.5;
+    transform: translateX(5%) rotate(1deg) scale(1.05);
+  }
+  66% {
+    opacity: 0.35;
+    transform: translateX(-5%) rotate(-1deg) scale(0.98);
+  }
+}
+
+@keyframes aurora-2 {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translateX(10%) rotate(0deg) scale(1.02);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translateX(-8%) rotate(-2deg) scale(0.95);
+  }
 }
 
 @keyframes cloud-drift-1 {
@@ -41,10 +136,61 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); }
-  50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); }
 }
 
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(99, 102, 241, 0.2); }
+  50% { border-color: rgba(99, 102, 241, 0.5); }
+}
+
+@keyframes noise {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 0%); }
+  30% { transform: translate(0%, 1%); }
+  40% { transform: translate(-1%, 1%); }
+  50% { transform: translate(1%, -1%); }
+}
+
+/* ═══ Utility Classes ═══ */
+
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 33%, rgba(255,255,255,0.05) 50%, transparent 66%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Grain overlay for texture */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: noise 8s steps(10) infinite;
+}
+
+/* Accent line — decorative top border */
+.accent-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--zend-accent-gradient);
+  border-radius: 1px;
 }

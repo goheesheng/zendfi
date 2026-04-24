@@ -10,7 +10,7 @@
 
 import { ThetanutsClient } from '@thetanuts-finance/thetanuts-client';
 import { ethers, Contract, JsonRpcSigner, JsonRpcProvider } from 'ethers';
-import { LOAN_COORDINATOR_ABI, PHY_OPTION_ABI, ERC20_ABI, OPTION_FACTORY_EVENTS_ABI } from './abis';
+import { LOAN_COORDINATOR_ABI, PHY_OPTION_ABI, ERC20_ABI, WETH_ABI, OPTION_FACTORY_EVENTS_ABI } from './abis';
 import {
   CHAIN_ID,
   LOAN_COORDINATOR_ADDRESS,
@@ -110,6 +110,17 @@ export class ThetanutsService {
     const keyPair = await this.getOrCreateKeyPair();
 
     const offerEndTimestamp = Math.floor(Date.now() / 1000) + DEFAULT_OFFER_DURATION_SECONDS;
+
+    // For WETH: wrap native ETH if WETH balance is insufficient
+    if (params.assetKey === 'WETH') {
+      const wethBalance = await this.getBalance(asset.collateral);
+      if (wethBalance < params.collateralAmount) {
+        const wethContract = new Contract(asset.collateral, WETH_ABI, this.signer);
+        const wrapAmount = params.collateralAmount - wethBalance;
+        const wrapTx = await wethContract.deposit({ value: wrapAmount });
+        await wrapTx.wait();
+      }
+    }
 
     // Approve collateral transfer to LoanCoordinator
     await this.ensureAllowance(asset.collateral, LOAN_COORDINATOR_ADDRESS, params.collateralAmount);

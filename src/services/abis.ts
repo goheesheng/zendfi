@@ -52,6 +52,13 @@ export const ERC20_ABI = [
   'event Approval(address indexed owner, address indexed spender, uint256 value)',
 ] as const;
 
+// WETH has a deposit() function to wrap native ETH
+export const WETH_ABI = [
+  ...ERC20_ABI,
+  'function deposit() payable',
+  'function withdraw(uint256 amount)',
+] as const;
+
 // LoanHandler events (emitted by the LoanHandler proxy instances)
 export const LOAN_HANDLER_ABI = [
   'event LoanSettled(address indexed coordinator, address indexed requester, address indexed finalOption, address collateralToken, address settlementToken, uint256 collateralAmount, uint256 settlementAmount, uint256 quotationId)',
