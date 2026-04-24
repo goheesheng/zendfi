@@ -166,6 +166,22 @@ export class ThetanutsService {
     return tx.wait();
   }
 
+  // ─── Settle Quotation (Lender fills a limit order) ───
+
+  async settleQuotation(quotationId: bigint) {
+    if (!this.signer) throw new Error('Wallet not connected');
+
+    const factoryAddress = this.client.chainConfig.contracts.optionFactory;
+    const factory = new Contract(
+      factoryAddress,
+      ['function settleQuotation(uint256 quotationId)'],
+      this.signer
+    );
+
+    const tx = await factory.settleQuotation(quotationId);
+    return tx.wait();
+  }
+
   // ─── Option Exercise (direct on PhysicallySettledCallOption) ───
 
   async exerciseOption(optionAddress: string) {

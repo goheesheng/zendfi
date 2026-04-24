@@ -126,3 +126,19 @@ export interface LoanCalculation {
 }
 
 export type TabId = 'borrow' | 'loans' | 'history' | 'lend';
+
+// Lending opportunity as returned by the ZendFi loan indexer
+export interface LendingOpportunity {
+  quotationId: string;
+  requester: string;
+  collateralToken: string;
+  settlementToken: string;
+  collateralAmount: string;
+  minSettlementAmount: string;
+  strike: string;
+  expiryTimestamp: number;
+  offerEndTimestamp: number;
+  convertToLimitOrder: boolean;
+  status: string;
+  optionAddress?: string;
+}
