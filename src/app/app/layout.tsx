@@ -32,7 +32,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <ThetanutsProvider>
           <ToastProvider>
             <main className="min-h-screen bg-white dark:bg-zend-bg text-gray-900 dark:text-gray-50">
-              <div className="max-w-app mx-auto px-4 py-6">
+              <div className="max-w-3xl mx-auto px-6 py-6">
                 <Header onOpenSettings={() => setSettingsOpen(true)} />
                 <TabNav />
                 <AppInner>{children}</AppInner>
