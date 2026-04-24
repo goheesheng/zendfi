@@ -35,7 +35,7 @@ export function useLoadPositions() {
 
         for (const [quotationId, loan] of Object.entries(loans as Record<string, any>)) {
           // Only load loans for the connected address
-          if (loan.requester?.toLowerCase() !== address.toLowerCase()) continue;
+          if (!address || loan.requester?.toLowerCase() !== address.toLowerCase()) continue;
 
           const expiryTimestamp = Number(loan.expiryTimestamp || 0);
           const optionAddress = loan.optionAddress || loan.finalOption;
