@@ -4,12 +4,15 @@ import { useEffect, useRef } from 'react';
 import { useAccount } from 'wagmi';
 import { useThetanuts } from '@/context/ThetanutsContext';
 import { useLoanContext } from '@/context/LoanContext';
-import { USDC_ADDRESS } from '@/services/constants';
+import { USDC_ADDRESS, LOAN_COORDINATOR_ADDRESS } from '@/services/constants';
+import { LOAN_COORDINATOR_ABI, OPTION_FACTORY_EVENTS_ABI } from '@/services/abis';
+import { Contract, EventLog } from 'ethers';
 import type { LoanStatus } from '@/types';
 
 /**
- * Loads existing user positions from the Thetanuts SDK indexer on wallet connect.
- * Maps StateRfq objects to our Loan type and upserts them into context.
+ * Loads existing user positions by scanning LoanCoordinator events on-chain.
+ * The SDK indexer doesn't work because LoanCoordinator is the requester in OptionFactory,
+ * not the user's wallet directly.
  */
 export function useLoadPositions() {
   const { address } = useAccount();
@@ -21,29 +24,52 @@ export function useLoadPositions() {
     if (!address || loadedRef.current === address) return;
     loadedRef.current = address;
 
-    async function loadFromIndexer() {
+    async function loadFromChain() {
       try {
-        const rfqs = await service.getUserRfqs();
-        if (!rfqs || !Array.isArray(rfqs)) return;
+        const client = service.getClient();
+        const provider = (service as any).coordinatorRead?.runner;
+        if (!provider) return;
+
+        // Scan LoanRequested events filtered by requester = user address
+        const coordinator = new Contract(LOAN_COORDINATOR_ADDRESS, LOAN_COORDINATOR_ABI, provider);
+        const currentBlock = await provider.provider.getBlockNumber();
+
+        // Scan last ~500k blocks (~3 days on Base at ~2 blocks/sec)
+        const fromBlock = Math.max(0, currentBlock - 500000);
+
+        console.log(`Loading loans for ${address} from block ${fromBlock}...`);
+
+        const filter = coordinator.filters.LoanRequested(null, address);
+        const events = await coordinator.queryFilter(filter, fromBlock, currentBlock);
+
+        console.log(`Found ${events.length} LoanRequested events`);
 
         const now = Math.floor(Date.now() / 1000);
 
-        for (const rfq of rfqs) {
+        for (const event of events) {
           try {
-            const quotationId = rfq.id;
-            if (!quotationId) continue;
+            if (!(event instanceof EventLog)) continue;
+            const args = event.args;
 
-            // Map SDK status to our LoanStatus
+            const quotationId = args[0].toString(); // quotationId
+            const collateralToken = args[2]; // collateralToken
+            const collateralAmount = args[4]; // collateralAmount
+            const minSettlementAmount = args[5]; // minSettlementAmount
+            const strike = args[6]; // strike
+            const expiryTimestamp = Number(args[7]); // expiryTimestamp
+            const offerEndTimestamp = Number(args[8]); // offerEndTimestamp
+
+            // Query current loan state from contract
+            const loanData = await service.getLoanRequest(BigInt(quotationId));
+
             let status: LoanStatus = 'requested';
-            const optionAddress = rfq.optionAddress;
-            const expiryTimestamp = rfq.expiryTimestamp || 0;
+            let optionAddress: string | undefined;
 
-            if (rfq.status === 'cancelled') {
-              status = 'cancelled';
-            } else if (rfq.status === 'settled' && optionAddress) {
-              // Settled = option deployed. Check if past exercise window
+            if (loanData.isSettled && loanData.settledOptionContract && loanData.settledOptionContract !== '0x0000000000000000000000000000000000000000') {
+              optionAddress = loanData.settledOptionContract;
+
               if (expiryTimestamp > 0 && now > expiryTimestamp + 3600) {
-                // Past exercise window — try to check if exercised
+                // Past exercise window
                 try {
                   const optInfo = await service.getOptionInfo(optionAddress);
                   status = optInfo.isSettled ? 'exercised' : 'expired';
@@ -53,47 +79,36 @@ export function useLoadPositions() {
               } else {
                 status = 'active';
               }
-            } else if (rfq.status === 'active') {
-              // Active RFQ = still waiting for offers or competing
-              if (rfq.convertToLimitOrder) {
-                status = 'limitOrder';
-              } else {
-                status = 'competing';
-              }
+            } else if (now > offerEndTimestamp) {
+              status = 'cancelled'; // offer window passed without settlement
+            } else {
+              status = 'competing';
             }
-
-            // Parse strikes — SDK returns string[] with 8 decimals
-            const strikeBig = rfq.strikes.length > 0 ? BigInt(rfq.strikes[0]) : 0n;
-
-            // Parse collateral amount
-            const collateralAmount = BigInt(rfq.numContracts || '0');
 
             upsertLoan(quotationId, {
               quotationId: BigInt(quotationId),
-              requester: rfq.requester,
-              collateralToken: rfq.collateral,
+              requester: address,
+              collateralToken,
               collateralAmount,
               settlementToken: USDC_ADDRESS,
-              strike: strikeBig,
+              strike,
               expiryTimestamp,
-              offerEndTimestamp: rfq.offerEndTimestamp || 0,
-              minSettlementAmount: BigInt(rfq.reservePrice || '0'),
+              offerEndTimestamp,
+              minSettlementAmount,
               status,
-              optionAddress: optionAddress || undefined,
-              createdAt: (rfq.createdAt || Math.floor(Date.now() / 1000)) * 1000,
+              optionAddress,
+              createdAt: Date.now(),
               offers: [],
             });
           } catch (e) {
-            console.warn('Failed to process RFQ:', rfq.id, e);
+            console.warn('Failed to process loan event:', e);
           }
         }
-
-        console.log(`Loaded ${rfqs.length} RFQs from indexer`);
       } catch (e) {
-        console.warn('Failed to load positions from indexer:', e);
+        console.warn('Failed to load positions from chain:', e);
       }
     }
 
-    loadFromIndexer();
+    loadFromChain();
   }, [address, service, upsertLoan]);
 }
