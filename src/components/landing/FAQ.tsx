@@ -38,11 +38,11 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="bg-gray-50 py-24 px-6">
+    <section className="bg-[#08090f] py-24 px-6">
       <div className="max-w-2xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently asked questions</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">Frequently asked questions</h2>
           </div>
         </ScrollReveal>
 
@@ -51,11 +51,11 @@ export function FAQ() {
             <ScrollReveal key={faq.question} delay={i * 60}>
               <Disclosure>
                 {({ open }) => (
-                  <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                    <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors duration-200">
-                      <span className="text-gray-900 font-medium">{faq.question}</span>
+                  <div className="glass-card rounded-xl overflow-hidden border-white/5">
+                    <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/[0.02] transition-colors duration-200">
+                      <span className="text-white font-medium">{faq.question}</span>
                       <svg
-                        className={`w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0 ml-4 ${
+                        className={`w-5 h-5 text-white/30 transition-transform duration-300 flex-shrink-0 ml-4 ${
                           open ? 'rotate-180' : ''
                         }`}
                         fill="none"
@@ -79,7 +79,7 @@ export function FAQ() {
                       leaveTo="transform scale-y-95 opacity-0"
                     >
                       <Disclosure.Panel className="px-6 pb-5">
-                        <p className="text-gray-500 leading-relaxed">{faq.answer}</p>
+                        <p className="text-white/30 leading-relaxed">{faq.answer}</p>
                       </Disclosure.Panel>
                     </Transition>
                   </div>

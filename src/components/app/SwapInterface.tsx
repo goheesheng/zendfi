@@ -46,8 +46,8 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   return (
     <div className="flex flex-col gap-0">
       {mmLiquidity !== '--' && (
-        <div className="mb-4 px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30 text-center">
-          <span className="text-xs text-indigo-600 dark:text-indigo-400">
+        <div className="mb-4 px-4 py-2 rounded-xl glass-card text-center">
+          <span className="text-xs text-indigo-400">
             Alpha Release — {mmLiquidity} USDC available from market makers
           </span>
         </div>
@@ -60,7 +60,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
+        <div className="w-8 h-8 rounded-full bg-zend-bg dark:bg-zend-bg border-4 border-zend-bg dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-bg border-4 border-white dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
+        <div className="w-8 h-8 rounded-full bg-zend-bg dark:bg-zend-bg border-4 border-zend-bg dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>

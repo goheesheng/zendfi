@@ -11,37 +11,37 @@ const rows = [
 
 export function Comparison() {
   return (
-    <section className="bg-white py-24 px-6">
+    <section className="bg-[#06070c] py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               Zend vs Traditional DeFi Lending
             </h2>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={100}>
-          <div className="overflow-hidden rounded-2xl border border-gray-100 shadow-sm">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-50">
-                  <th className="px-6 py-4 text-left font-semibold text-gray-700">Feature</th>
-                  <th className="px-6 py-4 text-center font-semibold text-blue-600">Zend</th>
-                  <th className="px-6 py-4 text-center font-semibold text-gray-400">Others</th>
+                <tr className="border-b border-white/5">
+                  <th className="px-6 py-4 text-left font-semibold text-white/30">Feature</th>
+                  <th className="px-6 py-4 text-center font-semibold text-indigo-400">Zend</th>
+                  <th className="px-6 py-4 text-center font-semibold text-white/30">Others</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row, i) => (
                   <tr
                     key={row.feature}
-                    className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}
+                    className={`border-b border-white/5 last:border-0 ${i % 2 === 0 ? '' : 'bg-white/[0.02]'}`}
                   >
-                    <td className="px-6 py-4 text-gray-700 font-medium">{row.feature}</td>
-                    <td className="px-6 py-4 text-center text-green-600 font-semibold">
+                    <td className="px-6 py-4 text-white/30 font-medium">{row.feature}</td>
+                    <td className="px-6 py-4 text-center text-indigo-400 font-semibold">
                       {row.zend}
                     </td>
-                    <td className="px-6 py-4 text-center text-gray-400">{row.others}</td>
+                    <td className="px-6 py-4 text-center text-white/30">{row.others}</td>
                   </tr>
                 ))}
               </tbody>

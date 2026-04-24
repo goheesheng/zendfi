@@ -1,9 +1,9 @@
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 py-8 px-6">
-      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-gray-500">
+    <footer className="bg-[#06070c] border-t border-white/[0.04] py-8 px-6">
+      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-white/25">
         {/* Brand */}
-        <span className="font-semibold text-gray-700">Zend Finance</span>
+        <span className="font-semibold text-white/25">Zend Finance</span>
 
         {/* Links */}
         <div className="flex items-center gap-6">
@@ -11,7 +11,7 @@ export function Footer() {
             href="https://docs.zend.fi"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-900 transition-colors"
+            className="hover:text-white/40 transition-colors"
           >
             Docs
           </a>
@@ -21,7 +21,7 @@ export function Footer() {
             href="https://twitter.com/zaborrowfi"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-900 transition-colors"
+            className="hover:text-white/40 transition-colors"
             aria-label="Twitter"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -34,7 +34,7 @@ export function Footer() {
             href="https://discord.gg/zend"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-900 transition-colors"
+            className="hover:text-white/40 transition-colors"
             aria-label="Discord"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -44,7 +44,7 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <span>© 2026 Zend Finance</span>
+        <span className="text-white/15">© 2026 Zend Finance</span>
       </div>
     </footer>
   );
