@@ -16,8 +16,8 @@ export function CollateralModal({ open, onClose }: { open: boolean; onClose: () 
             onClick={() => { setCollateral(key as 'WETH' | 'CBBTC'); onClose(); }}
             className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all ${
               state.selectedCollateral === key
-                ? 'border-zend-blue bg-zend-blue/5'
-                : 'border-gray-200 hover:border-zend-blue/40'
+                ? 'border-zend-blue bg-zend-blue/5 shadow-sm'
+                : 'border-gray-200 hover:border-zend-blue/40 hover:shadow-sm'
             }`}
           >
             <span className="text-2xl">{asset.icon}</span>

@@ -65,7 +65,7 @@ export function StrikeModal({ open, onClose }: { open: boolean; onClose: () => v
                       });
                       onClose();
                     }}
-                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 hover:border-zend-blue/40 hover:bg-gray-50 transition-all"
+                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 hover:border-zend-blue/40 hover:bg-gray-50 hover:shadow-sm transition-all duration-200"
                   >
                     <div className="text-left">
                       <div className="font-semibold text-gray-900 text-sm">
