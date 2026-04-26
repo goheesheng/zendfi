@@ -121,7 +121,7 @@ export function Hero() {
 
         {/* Subtitle */}
         <p
-          className={`text-lg text-white/80 mb-10 max-w-md mx-auto transition-all duration-1000 ${
+          className={`text-lg text-white/90 mb-10 max-w-md mx-auto transition-all duration-1000 ${
             animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
           style={{ transitionDelay: '0.5s' }}
