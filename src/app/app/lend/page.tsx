@@ -74,7 +74,7 @@ export default function LendPage() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 text-sm"
+          className="px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 text-sm hover:border-gray-300 transition-colors cursor-pointer"
         >
           <option value="all">All Assets</option>
           <option value="WETH">ETH</option>

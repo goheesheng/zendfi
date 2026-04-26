@@ -46,9 +46,9 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   return (
     <div className="flex flex-col gap-0">
       {mmLiquidity !== '--' && (
-        <div className="mb-4 px-4 py-2 rounded-xl bg-zend-blue/5 border border-zend-blue/15 text-center">
+        <div className="mb-4 px-4 py-2.5 rounded-xl bg-gradient-to-r from-zend-blue/5 to-purple-500/5 border border-zend-blue/15 text-center">
           <span className="text-xs text-zend-blue font-medium">
-            Alpha Release — {mmLiquidity} USDC available from market makers
+            Alpha Release — <span className="font-semibold">{mmLiquidity} USDC</span> available from market makers
           </span>
         </div>
       )}
