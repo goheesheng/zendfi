@@ -78,7 +78,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
+        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
       >
         Review
       </button>
