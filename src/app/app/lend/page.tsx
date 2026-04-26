@@ -56,7 +56,7 @@ export default function LendPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Lending Opportunities</h2>
+          <h2 className="text-xl font-display font-semibold text-gray-900">Lending Opportunities</h2>
           <p className="text-sm text-gray-500 mt-1">
             Fill limit orders by providing USDC. Receive collateral custody until expiry.
           </p>
@@ -64,7 +64,7 @@ export default function LendPage() {
         <button
           onClick={fetchOpportunities}
           disabled={loading}
-          className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+          className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50"
         >
           {loading ? 'Refreshing…' : 'Refresh'}
         </button>
