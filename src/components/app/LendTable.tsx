@@ -163,7 +163,7 @@ function LendRow({
     <button
       onClick={handleApprove}
       disabled={rowState.approving}
-      className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-gray-900 text-sm font-semibold transition-colors"
+      className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white text-sm font-semibold transition-colors"
     >
       {rowState.approving ? 'Approving…' : 'Approve USDC'}
     </button>
@@ -171,7 +171,7 @@ function LendRow({
     <button
       onClick={handleLend}
       disabled={rowState.lending}
-      className="px-4 py-2.5 rounded-xl bg-zend-accent hover:bg-zend-accent-hover disabled:opacity-60 text-gray-900 text-sm font-semibold transition-colors"
+      className="px-4 py-2.5 rounded-xl bg-zend-blue hover:bg-zend-blue-dark disabled:opacity-60 text-white text-sm font-semibold transition-colors"
     >
       {rowState.lending ? 'Lending…' : 'Lend'}
     </button>
@@ -288,7 +288,7 @@ export function LendTable({ opportunities, loading, onRefresh }: LendTableProps)
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm tabular-nums">
           <thead>
             <tr className="hidden md:table-row text-[11px] uppercase tracking-wider text-gray-400 border-b border-gray-100 bg-gray-50">
               <th className="text-left py-4 pl-4 font-medium">Asset</th>
