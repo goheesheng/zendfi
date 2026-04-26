@@ -13,6 +13,81 @@ Built on [Thetanuts V4 RFQ](https://docs.thetanuts.finance/sdk) infrastructure u
 
 No liquidations. No margin calls. No surprises.
 
+## Loan Lifecycle
+
+### Borrowing (getting USDC)
+
+```
+Borrower deposits ETH/BTC collateral
+        │
+        ▼
+LoanCoordinator.requestLoan()
+        │
+        ▼
+OptionFactory creates an RFQ (Request for Quotation)
+        │
+        ▼
+30-second sealed-bid auction begins
+Market makers submit encrypted offers
+        │
+        ├─── MM fills it ──► Borrower calls settleQuotationEarly()
+        │                     Borrower gets USDC, loan is active
+        │
+        └─── No MM fills ──► If keepOrderOpen=true:
+                              Quotation becomes a LIMIT ORDER
+                              Visible on the Lend tab for anyone to fill
+```
+
+### Lending (providing USDC for yield)
+
+Lenders fill limit orders created by borrowers who didn't get a market maker fill.
+
+```
+Lender sees unfilled limit order on Lend tab
+        │
+        ▼
+Approves USDC to OptionFactory
+        │
+        ▼
+Calls OptionFactory.settleQuotation(quotationId)
+        │
+        ▼
+Lender's USDC goes to borrower
+Lender gets custody of borrower's collateral (as a call option)
+```
+
+### At Expiry (European option, 1-hour exercise window)
+
+The borrower has three choices:
+
+| Action | What happens | Who gets what |
+|--------|-------------|---------------|
+| **Exercise** | Borrower repays USDC at the strike price | Borrower gets collateral back, lender gets USDC |
+| **Walk away** | Borrower keeps the USDC, forfeits collateral | Lender keeps the collateral |
+| **Swap & Exercise** | DEX swap + exercise in one transaction | Same as exercise but uses a DEX for the USDC |
+
+No auto-exercise. The borrower must manually call `exercise()` within the 1-hour window after expiry. If they do nothing, the lender keeps the collateral.
+
+### Contract Architecture
+
+```
+User ──► LoanCoordinator ──► OptionFactory (Thetanuts V4 RFQ)
+              │                       │
+              │ requestLoan()         │ sealed-bid auction
+              │ settleQuotationEarly()│ deploys option proxy (EIP-1167)
+              │ cancelLoan()          │
+              │                       ▼
+              │               PhysicallySettledCallOption (per-loan proxy)
+              │                       │
+              │                       │ exercise()
+              │                       │ doNotExercise()
+              │                       │ swapAndExercise()
+              ▼
+         LoanHandler (custom option type)
+```
+
+Each settled loan creates a new EIP-1167 minimal proxy contract that delegates to the PhysicallySettledCallOption implementation. The `optionAddress` stored per-loan is this proxy.
+
 ## Tech Stack
 
 - **Next.js 14** (App Router) + **TypeScript**
