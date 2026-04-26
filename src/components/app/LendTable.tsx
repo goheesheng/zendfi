@@ -121,7 +121,8 @@ function LendRow({
       setRowState((s) => ({ ...s, approving: false, approved: true }));
       showToast('USDC approved', 'success');
     } catch (err: any) {
-      showToast(err?.reason ?? err?.message ?? 'Approval failed', 'error');
+      const msg = err?.reason ?? err?.message ?? 'Approval failed';
+      showToast(msg, 'error');
       setRowState((s) => ({ ...s, approving: false }));
     }
   };
@@ -146,7 +147,14 @@ function LendRow({
       showToast('Loan filled! You are now the lender.', 'success');
       onRefresh?.();
     } catch (err: any) {
-      showToast(err?.reason ?? err?.message ?? 'Transaction failed', 'error');
+      const msg = err?.reason ?? err?.message ?? 'Transaction failed';
+      // QuotationNotActive = 0xbb27cd79: indexer is stale, quotation already settled/cancelled on-chain
+      if (msg.includes('0xbb27cd79') || msg.includes('QuotationNotActive')) {
+        showToast('This loan request is no longer available. It may have been filled or cancelled. Refreshing...', 'error');
+        onRefresh?.();
+      } else {
+        showToast(msg, 'error');
+      }
     } finally {
       setRowState((s) => ({ ...s, lending: false }));
     }
