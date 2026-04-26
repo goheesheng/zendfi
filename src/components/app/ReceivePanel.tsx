@@ -7,7 +7,7 @@ interface Props {
 
 export function ReceivePanel({ amount, onOpenStrikeModal }: Props) {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-200">
       <div className="text-xs text-gray-400 mb-2">Receive</div>
       <div className="flex items-center justify-between gap-3">
         <span className="flex-1 text-2xl font-medium text-gray-900">

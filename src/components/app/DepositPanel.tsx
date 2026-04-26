@@ -15,7 +15,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
   const asset = LOAN_ASSETS[state.selectedCollateral as AssetKey];
 
   return (
-    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-200">
       <div className="text-xs text-gray-400 mb-2">Deposit</div>
       <div className="flex items-center justify-between gap-3">
         <input
