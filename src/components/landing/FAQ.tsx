@@ -7,17 +7,17 @@ const faqs = [
   {
     question: 'How is liquidation-free borrowing possible?',
     answer:
-      'Zend uses physically-settled call options instead of traditional collateral debt positions. Your collateral secures a fixed-term option, so there is no ongoing collateral ratio to monitor and no liquidation trigger — the loan simply expires at a predetermined date.',
+      'When you deposit collateral, lenders simultaneously sell you a put option at your loan\'s strike price. This gives you the right — but not obligation — to sell your collateral at that price. If the market drops, you can simply walk away, keeping your loan while the lender keeps your collateral. No forced liquidations, ever.',
   },
   {
     question: 'What happens if my collateral value drops?',
     answer:
-      'Nothing changes for your loan. The terms are fixed at origination. If the collateral value drops below the strike price at expiry, you can choose to walk away — keep the USDC you borrowed and let the lender keep the collateral. You are never forced to do anything.',
+      'Nothing happens to your position. Unlike traditional lending where a price drop triggers liquidation, Zend\'s options-based structure means you\'re protected. You can choose to repay and reclaim your collateral, or walk away if it\'s worth less than your loan.',
   },
   {
     question: 'What collateral types are supported?',
     answer:
-      'Currently Zend supports ETH (via WETH) and cbBTC on Base mainnet. Additional collateral types may be added as the protocol expands.',
+      'Zend currently supports ETH and BTC as collateral. We\'re working on expanding to additional assets based on liquidity and demand.',
   },
   {
     question: 'How are loan terms determined?',
@@ -38,11 +38,12 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="bg-[#08090f] py-24 px-6">
+    <section className="bg-gray-50 py-24 px-6">
       <div className="max-w-2xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">Frequently asked questions</h2>
+            <h2 className="text-4xl font-display text-gray-900 mb-4">Frequently asked questions</h2>
+            <p className="text-gray-500">Everything you need to know about liquidation-free borrowing</p>
           </div>
         </ScrollReveal>
 
@@ -51,23 +52,18 @@ export function FAQ() {
             <ScrollReveal key={faq.question} delay={i * 60}>
               <Disclosure>
                 {({ open }) => (
-                  <div className="glass-card rounded-xl overflow-hidden border-white/5">
-                    <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/[0.02] transition-colors duration-200">
-                      <span className="text-white font-medium">{faq.question}</span>
+                  <div className="bg-white rounded-xl overflow-hidden border border-gray-100">
+                    <Disclosure.Button className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors duration-200">
+                      <span className="text-gray-900 font-medium">{faq.question}</span>
                       <svg
-                        className={`w-5 h-5 text-white/30 transition-transform duration-300 flex-shrink-0 ml-4 ${
+                        className={`w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0 ml-4 ${
                           open ? 'rotate-180' : ''
                         }`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </Disclosure.Button>
                     <Transition
@@ -79,7 +75,7 @@ export function FAQ() {
                       leaveTo="transform scale-y-95 opacity-0"
                     >
                       <Disclosure.Panel className="px-6 pb-5">
-                        <p className="text-white/30 leading-relaxed">{faq.answer}</p>
+                        <p className="text-gray-500 leading-relaxed">{faq.answer}</p>
                       </Disclosure.Panel>
                     </Transition>
                   </div>

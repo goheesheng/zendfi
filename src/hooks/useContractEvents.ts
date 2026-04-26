@@ -12,34 +12,35 @@ export function useContractEvents() {
   const subscribedRef = useRef(false);
 
   // Only subscribe to events when there's an active loan request
-  // This avoids the "filter not found" errors from constant RPC polling
   useEffect(() => {
     if (!address || !state.activeLoanRequestId || subscribedRef.current) return;
 
     subscribedRef.current = true;
 
-    const unsubOffer = service.onOfferMade((quotationId, offeror, ...args) => {
-      const id = quotationId.toString();
-      addOffer(id, {
-        offeror,
-        encryptedAmount: args[0] || '',
-        signingKey: args[1] || '',
-      });
-    });
-
-    const unsubSettled = service.onQuotationSettled((quotationId, _requester, _winner, optionAddress) => {
-      const id = quotationId.toString();
-      upsertLoan(id, { status: 'active', optionAddress });
-    });
-
-    const unsubCancelled = service.onQuotationCancelled((quotationId) => {
-      setLoanStatus(quotationId.toString(), 'cancelled');
+    const unsubscribe = service.subscribeToFactory({
+      onOfferMade: (event: any) => {
+        const id = event.quotationId?.toString();
+        if (!id || id !== state.activeLoanRequestId) return;
+        addOffer(id, {
+          offeror: event.offeror || '',
+          encryptedAmount: event.offerSignature || event.encryptedAmount || '',
+          signingKey: event.signingKey || '',
+        });
+      },
+      onSettled: (event: any) => {
+        const id = event.quotationId?.toString();
+        if (!id || id !== state.activeLoanRequestId) return;
+        upsertLoan(id, { status: 'active', optionAddress: event.optionAddress });
+      },
+      onCancelled: (event: any) => {
+        const id = event.quotationId?.toString();
+        if (!id) return;
+        setLoanStatus(id, 'cancelled');
+      },
     });
 
     return () => {
-      unsubOffer();
-      unsubSettled();
-      unsubCancelled();
+      if (typeof unsubscribe === 'function') unsubscribe();
       subscribedRef.current = false;
     };
   }, [address, state.activeLoanRequestId, service, upsertLoan, addOffer, setLoanStatus]);

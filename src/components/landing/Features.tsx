@@ -8,7 +8,7 @@ const features = [
       </svg>
     ),
     title: 'No Liquidations',
-    description: 'Your position is never force-liquidated. Borrow with confidence, no matter how volatile the market gets.',
+    description: 'Your collateral is protected. No matter how the market moves, you\'ll never face forced liquidation.',
   },
   {
     icon: (
@@ -17,7 +17,7 @@ const features = [
       </svg>
     ),
     title: 'Fixed Terms',
-    description: 'Know exactly when your loan expires and what you owe from day one. No surprises, no variable rate shocks.',
+    description: 'Know exactly what you owe from day one. No surprises, no variable rates eating into your position.',
   },
   {
     icon: (
@@ -26,7 +26,7 @@ const features = [
       </svg>
     ),
     title: 'Competitive Rates',
-    description: 'Market makers compete in a sealed-bid auction to give you the best borrowing rate available.',
+    description: 'Lenders compete to offer you the best rates through our RFQ system, driving down your borrowing costs.',
   },
   {
     icon: (
@@ -35,20 +35,20 @@ const features = [
       </svg>
     ),
     title: 'Options Protection',
-    description: 'Built on physically-settled call options via Thetanuts V4 RFQ — your collateral is always fully accounted for.',
+    description: 'Built-in put options give you the right to reclaim your collateral at a known price, no matter what.',
   },
 ];
 
 export function Features() {
   return (
-    <section className="bg-[#06070c] py-28 px-6 relative">
+    <section className="bg-white py-28 px-6 relative">
       <div className="max-w-5xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-display text-white mb-5 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-display text-gray-900 mb-5 tracking-tight">
               Borrowing, reimagined
             </h2>
-            <p className="text-base text-white/30 max-w-lg mx-auto leading-relaxed">
+            <p className="text-base text-gray-500 max-w-lg mx-auto leading-relaxed">
               Traditional DeFi lending means constant liquidation anxiety. Zend changes everything.
             </p>
           </div>
@@ -57,12 +57,12 @@ export function Features() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {features.map((feature, i) => (
             <ScrollReveal key={feature.title} delay={i * 80}>
-              <div className="group glass-card rounded-2xl p-8 transition-all duration-500 hover:border-indigo-500/20 hover:shadow-glow">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-5 group-hover:bg-indigo-500/15 transition-colors duration-300">
+              <div className="group rounded-2xl p-8 border border-gray-100 bg-white transition-all duration-500 hover:border-zend-blue/20 hover:shadow-lg">
+                <div className="w-10 h-10 rounded-xl bg-zend-blue/10 flex items-center justify-center text-zend-blue mb-5 group-hover:bg-zend-blue/15 transition-colors duration-300">
                   {feature.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2 tracking-tight">{feature.title}</h3>
-                <p className="text-white/35 text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 tracking-tight">{feature.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
               </div>
             </ScrollReveal>
           ))}

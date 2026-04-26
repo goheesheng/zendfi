@@ -1,68 +1,44 @@
 // ThetanutsService - wraps the Thetanuts SDK for ZendFi loan operations
 //
-// ZendFi uses a two-layer architecture:
-// 1. LoanCoordinator (ZendFi custom) - manages loan requests and collateral
-// 2. Thetanuts V4 OptionFactory (via SDK) - handles the RFQ auction + option creation
-//
-// The LoanCoordinator.requestLoan() internally calls OptionFactory.requestForQuotation().
-// Early settlement goes through LoanCoordinator.settleQuotationEarly().
-// Exercise/settlement happens directly on the PhysicallySettledCallOption contract.
+// All contract interactions now go through the SDK modules:
+// - client.loan: LoanCoordinator + Physical Option operations
+// - client.erc20: Token balances, allowances, approvals
+// - client.optionFactory: RFQ settlement
+// - client.events: Historical event queries
+// - client.ws: Real-time WebSocket subscriptions
+// - client.rfqKeys: ECDH key management
+// - client.api: Indexer data, market data
+// - client.mmPricing: Market maker pricing
 
-import { ThetanutsClient } from '@thetanuts-finance/thetanuts-client';
-import { ethers, Contract, JsonRpcSigner, JsonRpcProvider } from 'ethers';
-import { LOAN_COORDINATOR_ABI, PHY_OPTION_ABI, ERC20_ABI, WETH_ABI, OPTION_FACTORY_EVENTS_ABI } from './abis';
-import {
-  CHAIN_ID,
-  LOAN_COORDINATOR_ADDRESS,
-  USDC_ADDRESS,
-  LOAN_ASSETS,
-  STRIKE_DECIMALS,
-  HOURS_PER_YEAR,
-  DEFAULT_OFFER_DURATION_SECONDS,
-  type AssetKey,
-} from './constants';
-import type { Loan, OfferInfo, LoanStatus, StrikeOption, DeribitPricingMap, StrikeOptionGroup, UserSettings } from '../types';
+import { ThetanutsClient, LocalStorageProvider } from '@thetanuts-finance/thetanuts-client';
+import { JsonRpcSigner, JsonRpcProvider } from 'ethers';
+import { CHAIN_ID } from './constants';
+import type { DeribitPricingMap, StrikeOptionGroup, UserSettings } from '../types';
 import { fetchDeribitPricing, getFilteredStrikeOptions } from './pricing';
+import type { AssetKey } from './constants';
 
 export class ThetanutsService {
   private client: ThetanutsClient;
-  private coordinatorRead: Contract;
-  private coordinatorWrite: Contract | null = null;
-  private factoryRead: Contract;
-  private signer: JsonRpcSigner | null = null;
   private userAddress: string | null = null;
   private pricingCache: { data: DeribitPricingMap; fetchedAt: number } | null = null;
   private readonly PRICING_CACHE_TTL = 30_000;
 
   constructor(provider: JsonRpcProvider) {
-    // Initialize read-only Thetanuts client
     this.client = new ThetanutsClient({
       chainId: CHAIN_ID,
-      provider: provider as any, // SDK expects ethers v6 provider
+      provider: provider as any,
+      keyStorageProvider: typeof window !== 'undefined' ? new LocalStorageProvider() : undefined,
     });
-
-    // LoanCoordinator for read operations
-    this.coordinatorRead = new Contract(LOAN_COORDINATOR_ADDRESS, LOAN_COORDINATOR_ABI, provider);
-
-    // OptionFactory event interface (for listening to events)
-    this.factoryRead = new Contract(
-      this.client.chainConfig.contracts.optionFactory,
-      OPTION_FACTORY_EVENTS_ABI,
-      provider
-    );
   }
 
   /** Attach a signer for write operations */
   setSigner(signer: JsonRpcSigner, address: string) {
-    this.signer = signer;
     this.userAddress = address;
-    this.coordinatorWrite = new Contract(LOAN_COORDINATOR_ADDRESS, LOAN_COORDINATOR_ABI, signer);
-
-    // Update SDK client with signer
     this.client = new ThetanutsClient({
       chainId: CHAIN_ID,
       provider: signer.provider as any,
       signer: signer as any,
+      keyStorageProvider: typeof window !== 'undefined' ? new LocalStorageProvider() : undefined,
     });
   }
 
@@ -70,7 +46,7 @@ export class ThetanutsService {
     return this.client;
   }
 
-  // ─── ECDH Key Management (via SDK) ───
+  // ─── ECDH Key Management (via SDK rfqKeys module) ───
 
   async getOrCreateKeyPair() {
     return this.client.rfqKeys.getOrCreateKeyPair();
@@ -84,7 +60,7 @@ export class ThetanutsService {
     return this.client.rfqKeys.decryptOffer(encryptedData, signingKey);
   }
 
-  // ─── Market Data (via SDK) ───
+  // ─── Market Data (via SDK api + mmPricing modules) ───
 
   async getMarketData() {
     return this.client.api.getMarketData();
@@ -94,175 +70,83 @@ export class ThetanutsService {
     return this.client.mmPricing.getAllPricing(underlying);
   }
 
-  // ─── Loan Request (via LoanCoordinator) ───
+  async getMarketPrices() {
+    return this.client.api.getMarketPrices();
+  }
+
+  // ─── Loan Operations (via SDK loan module) ───
 
   async requestLoan(params: {
     assetKey: AssetKey;
     collateralAmount: bigint;
-    strike: bigint;
+    strike: number;
     expiryTimestamp: number;
     minSettlementAmount: bigint;
     keepOrderOpen: boolean;
   }) {
-    if (!this.coordinatorWrite || !this.signer) throw new Error('Wallet not connected');
-
-    const asset = LOAN_ASSETS[params.assetKey];
-    const keyPair = await this.getOrCreateKeyPair();
-
-    const offerEndTimestamp = Math.floor(Date.now() / 1000) + DEFAULT_OFFER_DURATION_SECONDS;
-
-    // For WETH: wrap native ETH if WETH balance is insufficient
-    if (params.assetKey === 'WETH') {
-      const wethBalance = await this.getBalance(asset.collateral);
-      if (wethBalance < params.collateralAmount) {
-        const wethContract = new Contract(asset.collateral, WETH_ABI, this.signer);
-        const wrapAmount = params.collateralAmount - wethBalance;
-        const wrapTx = await wethContract.deposit({ value: wrapAmount });
-        await wrapTx.wait();
-      }
-    }
-
-    // Approve collateral transfer to LoanCoordinator
-    await this.ensureAllowance(asset.collateral, LOAN_COORDINATOR_ADDRESS, params.collateralAmount);
-
-    // Submit loan request
-    const tx = await this.coordinatorWrite.requestLoan({
-      collateralToken: asset.collateral,
-      priceFeed: asset.priceFeed,
-      settlementToken: USDC_ADDRESS,
+    const underlying = params.assetKey === 'WETH' ? 'ETH' as const : 'BTC' as const;
+    return this.client.loan.requestLoan({
+      underlying,
       collateralAmount: params.collateralAmount,
       strike: params.strike,
       expiryTimestamp: params.expiryTimestamp,
-      offerEndTimestamp,
       minSettlementAmount: params.minSettlementAmount,
-      convertToLimitOrder: params.keepOrderOpen,
-      requesterPublicKey: keyPair.compressedPublicKey,
+      keepOrderOpen: params.keepOrderOpen,
     });
-
-    const receipt = await tx.wait();
-    return { tx, receipt, keyPair };
   }
 
-  // ─── Accept Offer (Early Settlement via LoanCoordinator) ───
-
-  async acceptOffer(quotationId: bigint, offerAmount: bigint, nonce: string, offeror: string) {
-    if (!this.coordinatorWrite) throw new Error('Wallet not connected');
-
-    const tx = await this.coordinatorWrite.settleQuotationEarly(
-      quotationId,
-      offerAmount,
-      nonce,
-      offeror
-    );
-    return tx.wait();
+  async acceptOffer(quotationId: bigint, offerAmount: bigint, nonce: bigint, offeror: string) {
+    return this.client.loan.acceptOffer(quotationId, offerAmount, nonce, offeror);
   }
-
-  // ─── Cancel Loan ───
 
   async cancelLoan(quotationId: bigint) {
-    if (!this.coordinatorWrite) throw new Error('Wallet not connected');
-
-    const tx = await this.coordinatorWrite.cancelLoan(quotationId);
-    return tx.wait();
+    return this.client.loan.cancelLoan(quotationId);
   }
 
-  // ─── Settle Quotation (Lender fills a limit order) ───
-
-  async settleQuotation(quotationId: bigint) {
-    if (!this.signer) throw new Error('Wallet not connected');
-
-    const factoryAddress = this.client.chainConfig.contracts.optionFactory;
-    const factory = new Contract(
-      factoryAddress,
-      ['function settleQuotation(uint256 quotationId)'],
-      this.signer
-    );
-
-    const tx = await factory.settleQuotation(quotationId);
-    return tx.wait();
+  async lend(quotationId: bigint) {
+    return this.client.loan.lend(quotationId);
   }
 
-  // ─── Option Exercise (direct on PhysicallySettledCallOption) ───
+  // ─── Option Exercise (via SDK loan module) ───
 
   async exerciseOption(optionAddress: string) {
-    if (!this.signer) throw new Error('Wallet not connected');
-
-    const option = new Contract(optionAddress, PHY_OPTION_ABI, this.signer);
-    const tx = await option.exercise();
-    return tx.wait();
+    return this.client.loan.exerciseOption(optionAddress);
   }
 
   async swapAndExercise(optionAddress: string, aggregator: string, swapData: string) {
-    if (!this.signer) throw new Error('Wallet not connected');
-
-    const option = new Contract(optionAddress, PHY_OPTION_ABI, this.signer);
-    const tx = await option.swapAndExercise(aggregator, swapData);
-    return tx.wait();
+    return this.client.loan.swapAndExercise(optionAddress, aggregator, swapData);
   }
 
   async doNotExercise(optionAddress: string) {
-    if (!this.signer) throw new Error('Wallet not connected');
-
-    const option = new Contract(optionAddress, PHY_OPTION_ABI, this.signer);
-    const tx = await option.doNotExercise();
-    return tx.wait();
+    return this.client.loan.doNotExercise(optionAddress);
   }
 
-  // ─── Option Queries ───
+  // ─── Option Queries (via SDK loan module) ───
 
   async getOptionInfo(optionAddress: string) {
-    const option = new Contract(optionAddress, PHY_OPTION_ABI, this.coordinatorRead.runner);
-    const [buyer, seller, collateralToken, collateralAmount, expiryTimestamp, strikes, isSettled, twap, deliveryAmount, exerciseWindow] =
-      await Promise.all([
-        option.buyer(),
-        option.seller(),
-        option.collateralToken(),
-        option.collateralAmount(),
-        option.expiryTimestamp(),
-        option.getStrikes(),
-        option.optionSettled(),
-        option.getTWAP().catch(() => 0n),
-        option.calculateDeliveryAmount().catch(() => 0n),
-        option.EXERCISE_WINDOW(),
-      ]);
-
-    return {
-      buyer,
-      seller,
-      collateralToken,
-      collateralAmount,
-      expiryTimestamp: Number(expiryTimestamp),
-      strikes: strikes.map((s: bigint) => Number(s) / 10 ** STRIKE_DECIMALS),
-      isSettled,
-      twap: Number(twap),
-      deliveryAmount,
-      exerciseWindow: Number(exerciseWindow),
-    };
+    return this.client.loan.getOptionInfo(optionAddress);
   }
 
   async isOptionITM(optionAddress: string): Promise<boolean> {
-    const option = new Contract(optionAddress, PHY_OPTION_ABI, this.coordinatorRead.runner);
-    const twap = await option.getTWAP();
-    return option.isITM(twap);
+    return this.client.loan.isOptionITM(optionAddress);
   }
 
-  // ─── Loan Query (from LoanCoordinator) ───
+  // ─── Loan Query (via SDK loan module) ───
 
   async getLoanRequest(quotationId: bigint) {
-    const result = await this.coordinatorRead.loanRequests(quotationId);
-    return {
-      requester: result.requester as string,
-      collateralAmount: result.collateralAmount as bigint,
-      strike: result.strike as bigint,
-      expiryTimestamp: Number(result.expiryTimestamp),
-      collateralToken: result.collateralToken as string,
-      settlementToken: result.settlementToken as string,
-      isSettled: result.isSettled as boolean,
-      settledOptionContract: result.settledOptionContract as string,
-    };
+    return this.client.loan.getLoanRequest(quotationId);
   }
 
-  // ─── User Positions (via SDK Indexer) ───
+  async getLendingOpportunities() {
+    return this.client.loan.getLendingOpportunities();
+  }
+
+  async getUserLoans() {
+    if (!this.userAddress) return [];
+    return this.client.loan.getUserLoans(this.userAddress);
+  }
+
+  // ─── User Positions (via SDK api module) ───
 
   async getUserRfqs() {
     if (!this.userAddress) return [];
@@ -274,54 +158,89 @@ export class ThetanutsService {
     return this.client.api.getUserPositionsFromIndexer(this.userAddress);
   }
 
-  // ─── Token Operations ───
+  async getUserHistory() {
+    if (!this.userAddress) return [];
+    return this.client.api.getUserHistoryFromIndexer(this.userAddress);
+  }
+
+  // ─── Token Operations (via SDK erc20 module) ───
 
   async getBalance(tokenAddress: string, owner?: string): Promise<bigint> {
     const addr = owner || this.userAddress;
     if (!addr) return 0n;
-
-    const token = new Contract(tokenAddress, ERC20_ABI, this.coordinatorRead.runner);
-    return token.balanceOf(addr);
+    return this.client.erc20.getBalance(tokenAddress, addr);
   }
 
   async getAllowance(tokenAddress: string, spender: string): Promise<bigint> {
     if (!this.userAddress) return 0n;
-
-    const token = new Contract(tokenAddress, ERC20_ABI, this.coordinatorRead.runner);
-    return token.allowance(this.userAddress, spender);
+    return this.client.erc20.getAllowance(tokenAddress, this.userAddress, spender);
   }
 
   async ensureAllowance(tokenAddress: string, spender: string, amount: bigint) {
-    if (!this.signer || !this.userAddress) throw new Error('Wallet not connected');
-
-    const current = await this.getAllowance(tokenAddress, spender);
-    if (current >= amount) return; // Already sufficient
-
-    const token = new Contract(tokenAddress, ERC20_ABI, this.signer);
-    const tx = await token.approve(spender, amount);
-    await tx.wait();
+    return this.client.erc20.ensureAllowance(tokenAddress, spender, amount);
   }
 
-  // ─── Event Subscriptions ───
+  // ─── Event Queries (via SDK events module) ───
 
-  onLoanRequested(callback: (quotationId: bigint, requester: string, event: any) => void) {
-    this.coordinatorRead.on('LoanRequested', callback);
-    return () => this.coordinatorRead.off('LoanRequested', callback);
+  async getOfferMadeEvents(filters?: { fromBlock?: number; toBlock?: number }) {
+    return this.client.events.getOfferMadeEvents(filters);
   }
 
-  onOfferMade(callback: (quotationId: bigint, offeror: string, ...args: any[]) => void) {
-    this.factoryRead.on('OfferMade', callback);
-    return () => this.factoryRead.off('OfferMade', callback);
+  async getQuotationSettledEvents(filters?: { fromBlock?: number; toBlock?: number }) {
+    return this.client.events.getQuotationSettledEvents(filters);
   }
 
-  onQuotationSettled(callback: (quotationId: bigint, requester: string, winner: string, optionAddress: string) => void) {
-    this.factoryRead.on('QuotationSettled', callback);
-    return () => this.factoryRead.off('QuotationSettled', callback);
+  async getQuotationCancelledEvents(filters?: { fromBlock?: number; toBlock?: number }) {
+    return this.client.events.getQuotationCancelledEvents(filters);
   }
 
-  onQuotationCancelled(callback: (quotationId: bigint) => void) {
-    this.factoryRead.on('QuotationCancelled', callback);
-    return () => this.factoryRead.off('QuotationCancelled', callback);
+  async getRfqHistory(quotationId: bigint) {
+    return this.client.events.getRfqHistory(quotationId);
+  }
+
+  // ─── Real-time Subscriptions (via SDK ws module) ───
+
+  subscribeToRfq(quotationId: bigint, callbacks: {
+    onOfferMade?: (event: any) => void;
+    onSettled?: (event: any) => void;
+    onCancelled?: (event: any) => void;
+  }) {
+    return this.client.ws.subscribeToRfq(quotationId, callbacks);
+  }
+
+  subscribeOrders(callback: (update: any) => void) {
+    return this.client.ws.subscribeOrders(callback);
+  }
+
+  subscribePrices(callback: (update: any) => void, asset?: string) {
+    return this.client.ws.subscribePrices(callback, asset);
+  }
+
+  subscribeToFactory(callbacks: {
+    onQuotationRequested?: (event: any) => void;
+    onOfferMade?: (event: any) => void;
+    onSettled?: (event: any) => void;
+    onCancelled?: (event: any) => void;
+  }) {
+    return this.client.ws.subscribeToFactory(callbacks);
+  }
+
+  // ─── SDK State API (factory data) ───
+
+  async getFactoryRfqs(status?: 'settled' | 'active' | 'cancelled') {
+    return this.client.api.getFactoryRfqs(status);
+  }
+
+  async getFactoryOffers() {
+    return this.client.api.getFactoryOffers();
+  }
+
+  async getFactoryOptions() {
+    return this.client.api.getFactoryOptions();
+  }
+
+  async getProtocolStats() {
+    return this.client.api.getStatsFromIndexer();
   }
 
   // ─── Pricing Helpers ───
@@ -343,13 +262,12 @@ export class ThetanutsService {
     return getFilteredStrikeOptions(pricing, assetKey, settings);
   }
 
-  /** Get available strike options for an asset, filtering by user settings */
   async getStrikeOptions(
     assetKey: AssetKey,
     minDays: number,
     maxStrikes: number,
     maxApr: number
-  ): Promise<StrikeOption[]> {
+  ) {
     const settings: UserSettings = {
       minDurationDays: minDays,
       maxStrikes,
@@ -361,14 +279,35 @@ export class ThetanutsService {
     return groups.flatMap((g) => g.options);
   }
 
-  // ─── WebSocket (via SDK) ───
+  // ─── Loan Calculations (via SDK loan module) ───
 
-  async subscribeOrders(callback: (update: any) => void) {
-    return this.client.ws.subscribeOrders(callback);
+  calculateLoan(params: {
+    depositAmount: string;
+    underlying: 'ETH' | 'BTC';
+    strike: number;
+    expiryTimestamp: number;
+    askPrice: number;
+    underlyingPrice: number;
+    maxApr?: number;
+  }) {
+    return this.client.loan.calculateLoan({
+      depositAmount: params.depositAmount,
+      underlying: params.underlying,
+      strike: params.strike,
+      expiryTimestamp: params.expiryTimestamp,
+      askPrice: params.askPrice,
+      underlyingPrice: params.underlyingPrice,
+      maxApr: params.maxApr ?? 10,
+    });
   }
 
-  async subscribePrices(callback: (update: any) => void, asset?: string) {
-    return this.client.ws.subscribePrices(callback, asset);
+  // ─── SDK Utilities ───
+
+  get utils() {
+    return this.client.utils;
   }
 
+  get chainConfig() {
+    return this.client.chainConfig;
+  }
 }

@@ -56,15 +56,15 @@ export default function LendPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Lending Opportunities</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h2 className="text-lg font-semibold text-gray-900">Lending Opportunities</h2>
+          <p className="text-sm text-gray-500 mt-1">
             Fill limit orders by providing USDC. Receive collateral custody until expiry.
           </p>
         </div>
         <button
           onClick={fetchOpportunities}
           disabled={loading}
-          className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 dark:border-zend-border text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zend-input transition-colors disabled:opacity-50"
+          className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
         >
           {loading ? 'Refreshing…' : 'Refresh'}
         </button>
@@ -74,7 +74,7 @@ export default function LendPage() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-gray-50 dark:bg-zend-input border border-gray-200 dark:border-zend-border text-gray-900 dark:text-white text-sm"
+          className="px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-900 text-sm"
         >
           <option value="all">All Assets</option>
           <option value="WETH">ETH</option>
@@ -83,7 +83,7 @@ export default function LendPage() {
       </div>
 
       {error ? (
-        <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/10 p-4 text-sm text-red-600 dark:text-red-400">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
           {error}
         </div>
       ) : (

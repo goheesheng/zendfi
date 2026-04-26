@@ -6,23 +6,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Core darks — rich, deep, layered
-        'zend-bg': '#08090f',
-        'zend-bg2': '#0f1117',
-        'zend-card': '#14161e',
-        'zend-border': '#1e2030',
-        'zend-input': '#0c0d14',
-        // Accent — indigo spectrum
-        'zend-accent': '#6366f1',
-        'zend-accent-hover': '#4f46e5',
-        'zend-accent-soft': '#818cf8',
+        // Core darks — app dark mode
+        'zend-bg': '#0c0f1a',
+        'zend-bg2': '#111527',
+        'zend-card': '#161a2e',
+        'zend-border': '#232842',
+        'zend-input': '#0e1222',
+        // Accent — bright blue matching reference (#5d74ff)
+        'zend-accent': '#5d74ff',
+        'zend-accent-hover': '#4a5fe6',
+        'zend-accent-soft': '#8b9dff',
+        // Blue hero background
+        'zend-blue': '#5d74ff',
+        'zend-blue-dark': '#4a5fe6',
         // Semantic
         'zend-success': '#34d399',
         'zend-warning': '#fbbf24',
         'zend-error': '#f87171',
         // Light mode
         'zend-light': '#fafbfc',
-        'zend-light-card': '#f1f3f5',
+        'zend-light-card': '#f5f6f8',
       },
       maxWidth: {
         'app': '480px',
@@ -50,16 +53,16 @@ const config: Config = {
         },
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(99, 102, 241, 0.15)',
-        'glow-lg': '0 0 40px rgba(99, 102, 241, 0.2)',
-        'inner-glow': 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-        'card': '0 4px 24px rgba(0, 0, 0, 0.3)',
-        'card-hover': '0 8px 40px rgba(0, 0, 0, 0.4)',
+        'glow': '0 0 20px rgba(93, 116, 255, 0.25)',
+        'glow-lg': '0 0 40px rgba(93, 116, 255, 0.3)',
+        'inner-glow': 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        'card': '0 4px 24px rgba(0, 0, 0, 0.08)',
+        'card-hover': '0 8px 40px rgba(0, 0, 0, 0.12)',
       },
       backgroundImage: {
-        'accent-gradient': 'linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%)',
-        'dark-gradient': 'linear-gradient(180deg, #0f1117 0%, #08090f 100%)',
-        'card-gradient': 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
+        'accent-gradient': 'linear-gradient(135deg, #8b9dff 0%, #5d74ff 50%, #4a5fe6 100%)',
+        'dark-gradient': 'linear-gradient(180deg, #111527 0%, #0c0f1a 100%)',
+        'card-gradient': 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%)',
       },
     },
   },

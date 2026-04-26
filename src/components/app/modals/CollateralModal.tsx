@@ -16,12 +16,12 @@ export function CollateralModal({ open, onClose }: { open: boolean; onClose: () 
             onClick={() => { setCollateral(key as 'WETH' | 'CBBTC'); onClose(); }}
             className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all ${
               state.selectedCollateral === key
-                ? 'border-zend-accent bg-indigo-50 dark:bg-indigo-950/20'
-                : 'border-gray-200 dark:border-zend-border hover:border-zend-accent'
+                ? 'border-zend-blue bg-zend-blue/5'
+                : 'border-gray-200 hover:border-zend-blue/40'
             }`}
           >
             <span className="text-2xl">{asset.icon}</span>
-            <span className="font-semibold text-gray-900 dark:text-white">{asset.symbol}</span>
+            <span className="font-semibold text-gray-900">{asset.symbol}</span>
           </button>
         ))}
       </div>

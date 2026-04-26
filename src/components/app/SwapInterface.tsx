@@ -46,8 +46,8 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   return (
     <div className="flex flex-col gap-0">
       {mmLiquidity !== '--' && (
-        <div className="mb-4 px-4 py-2 rounded-xl glass-card text-center">
-          <span className="text-xs text-indigo-400">
+        <div className="mb-4 px-4 py-2 rounded-xl bg-zend-blue/5 border border-zend-blue/15 text-center">
+          <span className="text-xs text-zend-blue font-medium">
             Alpha Release — {mmLiquidity} USDC available from market makers
           </span>
         </div>
@@ -60,7 +60,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-zend-bg dark:bg-zend-bg border-4 border-zend-bg dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
+        <div className="w-8 h-8 rounded-full bg-gray-50 border-4 border-gray-50 flex items-center justify-center transition-colors">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-zend-bg dark:bg-zend-bg border-4 border-zend-bg dark:border-zend-bg flex items-center justify-center hover:rotate-180 transition-transform duration-300 cursor-pointer">
+        <div className="w-8 h-8 rounded-full bg-gray-50 border-4 border-gray-50 flex items-center justify-center transition-colors">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -78,7 +78,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className={`mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-gradient-to-br from-indigo-400 to-zend-accent hover:from-indigo-500 hover:to-zend-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all ${canReview ? 'animate-pulse-glow' : ''}`}
+        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
       >
         Review
       </button>

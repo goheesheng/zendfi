@@ -20,39 +20,39 @@ export function HistoryCard({ loan }: { loan: Loan }) {
       : null;
 
   return (
-    <div className="glass-card rounded-2xl p-6 mb-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+    <div className="bg-white rounded-2xl p-6 mb-4 border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex justify-between items-center mb-5">
-        <span className="font-semibold text-white text-xl">Loan #{loan.quotationId.toString()}</span>
+        <span className="font-semibold text-gray-900 text-xl">Loan #{loan.quotationId.toString()}</span>
         <Badge status={loan.status} />
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-5">
-        <div className="bg-white/[0.03] rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-white/30 mb-1.5">Deposited</div>
-          <div className="font-semibold text-white text-base">{parseFloat(collateral).toFixed(6)} {symbol}</div>
+        <div className="bg-gray-50 rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-gray-400 mb-1.5">Deposited</div>
+          <div className="font-semibold text-gray-900 text-base">{parseFloat(collateral).toFixed(6)} {symbol}</div>
         </div>
-        <div className="bg-white/[0.03] rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-white/30 mb-1.5">Borrowed</div>
-          <div className="font-semibold text-white text-base">{borrowed ? `${borrowed} USDC` : '--'}</div>
+        <div className="bg-gray-50 rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-gray-400 mb-1.5">Borrowed</div>
+          <div className="font-semibold text-gray-900 text-base">{borrowed ? `${borrowed} USDC` : '--'}</div>
         </div>
       </div>
 
       <div className="space-y-3 text-sm">
         {strikeNum > 0 && (
           <div className="flex justify-between">
-            <span className="text-white/30">Strike</span>
-            <span className="text-white">${strikeNum.toLocaleString()}</span>
+            <span className="text-gray-400">Strike</span>
+            <span className="text-gray-900">${strikeNum.toLocaleString()}</span>
           </div>
         )}
         {loan.expiryTimestamp > 0 && (
           <div className="flex justify-between">
-            <span className="text-white/30">Expiry</span>
-            <span className="text-white">{formatDate(loan.expiryTimestamp)}</span>
+            <span className="text-gray-400">Expiry</span>
+            <span className="text-gray-900">{formatDate(loan.expiryTimestamp)}</span>
           </div>
         )}
         <div className="flex justify-between">
-          <span className="text-white/30">Created</span>
-          <span className="text-white">{new Date(loan.createdAt).toLocaleDateString()}</span>
+          <span className="text-gray-400">Created</span>
+          <span className="text-gray-900">{new Date(loan.createdAt).toLocaleDateString()}</span>
         </div>
       </div>
     </div>

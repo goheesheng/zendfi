@@ -1,17 +1,17 @@
+'use client';
+
 import Link from 'next/link';
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-10 py-5">
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-xl border-b border-white/[0.04]" />
-
-      <span className="relative text-white/50 font-medium text-sm tracking-wide">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-10 py-4 bg-white/10 backdrop-blur-md">
+      <span className="text-white font-semibold text-sm tracking-wide">
         Zend Finance
       </span>
 
       <Link
         href="/app"
-        className="relative px-5 py-2.5 rounded-xl text-white/70 text-xs font-semibold tracking-wide border border-white/10 hover:border-indigo-400/40 hover:text-white hover:shadow-glow transition-all duration-300"
+        className="px-5 py-2.5 rounded-lg text-sm font-semibold bg-zend-blue text-white hover:bg-zend-blue-dark transition-all duration-200"
       >
         Launch App
       </Link>

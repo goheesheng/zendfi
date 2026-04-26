@@ -23,7 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
-    setTheme('dark');
+    setTheme('light');
   }, [setTheme]);
 
   return (
@@ -31,7 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <LoanProvider>
         <ThetanutsProvider>
           <ToastProvider>
-            <main className="min-h-screen bg-white dark:bg-zend-bg text-gray-900 dark:text-gray-50">
+            <main className="min-h-screen bg-gray-50 text-gray-900">
               <div className="max-w-3xl mx-auto px-6 py-6">
                 <Header onOpenSettings={() => setSettingsOpen(true)} />
                 <TabNav />

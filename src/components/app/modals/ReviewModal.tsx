@@ -5,7 +5,7 @@ import { Modal } from '@/components/ui/Modal';
 import { useLoanContext } from '@/context/LoanContext';
 import { useThetanuts } from '@/context/ThetanutsContext';
 import { useToast } from '@/components/ui/Toast';
-import { LOAN_ASSETS, LOAN_COORDINATOR_ADDRESS, STRIKE_DECIMALS, USDC_ADDRESS, type AssetKey } from '@/services/constants';
+import { LOAN_ASSETS, USDC_ADDRESS, type AssetKey } from '@/services/constants';
 import { formatDate } from '@/services/formatting';
 import { ethers } from 'ethers';
 import type { LoanCalculation } from '@/types';
@@ -37,51 +37,33 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanC
     setSubmitting(true);
     try {
       const collateralAmount = ethers.parseUnits(deposit.toString(), asset.decimals);
-      const strikeBig = BigInt(Math.round(strike! * 10 ** STRIKE_DECIMALS));
       const minSettlement = loanCalc ? loanCalc.finalLoanAmount : ethers.parseUnits(receiveAmount || '0', 6);
 
-      const { receipt } = await service.requestLoan({
+      const result = await service.requestLoan({
         assetKey: state.selectedCollateral as AssetKey,
         collateralAmount,
-        strike: strikeBig,
+        strike: strike!,
         expiryTimestamp: expiry!,
         minSettlementAmount: minSettlement,
         keepOrderOpen: state.settings.keepOrderOpen,
       });
 
-      // Parse quotationId from LoanRequested event in receipt
-      let loanId = '';
-      if (receipt) {
-        const iface = new ethers.Interface([
-          'event LoanRequested(uint256 indexed quotationId, address indexed requester, address collateralToken, address settlementToken, uint256 collateralAmount, uint256 minSettlementAmount, uint256 strike, uint256 expiryTimestamp, uint256 offerEndTimestamp, bool convertToLimitOrder)',
-        ]);
-        for (const log of receipt.logs) {
-          try {
-            const parsed = iface.parseLog(log);
-            if (parsed && parsed.name === 'LoanRequested') {
-              loanId = parsed.args.quotationId.toString();
-              const offerEndTimestamp = Number(parsed.args.offerEndTimestamp);
-              upsertLoan(loanId, {
-                quotationId: parsed.args.quotationId,
-                requester: parsed.args.requester,
-                collateralToken: parsed.args.collateralToken,
-                collateralAmount: parsed.args.collateralAmount,
-                settlementToken: USDC_ADDRESS,
-                strike: parsed.args.strike,
-                expiryTimestamp: expiry!,
-                offerEndTimestamp,
-                minSettlementAmount: parsed.args.minSettlementAmount,
-                status: 'requested',
-                createdAt: Date.now(),
-                offers: [],
-              });
-              break;
-            }
-          } catch {
-            // Not this event
-          }
-        }
-      }
+      const loanId = result.quotationId.toString();
+
+      upsertLoan(loanId, {
+        quotationId: result.quotationId,
+        requester: await service.getClient().getSignerAddress(),
+        collateralToken: asset.collateral,
+        collateralAmount,
+        settlementToken: USDC_ADDRESS,
+        strike: BigInt(Math.round(strike! * 1e8)),
+        expiryTimestamp: expiry!,
+        offerEndTimestamp: Math.floor(Date.now() / 1000) + 30,
+        minSettlementAmount: minSettlement,
+        status: 'requested',
+        createdAt: Date.now(),
+        offers: [],
+      });
 
       onClose();
       onConfirmed(loanId);
@@ -114,15 +96,15 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanC
       <div className="space-y-4">
         {rows.map(([label, value]) => (
           <div key={label} className="flex justify-between text-sm">
-            <span className="text-gray-500 dark:text-gray-400">{label}</span>
-            <span className="font-semibold text-gray-900 dark:text-white">{value}</span>
+            <span className="text-gray-500">{label}</span>
+            <span className="font-semibold text-gray-900">{value}</span>
           </div>
         ))}
         <p className="text-xs text-gray-400 mt-4">European option: exercise only at expiry within 1-hour window. No early repayment.</p>
         <button
           onClick={confirm}
           disabled={submitting}
-          className="w-full py-4 rounded-2xl font-semibold text-white bg-gradient-to-br from-indigo-400 to-zend-accent hover:from-indigo-500 hover:to-zend-accent-hover disabled:opacity-50 transition-all mt-4"
+          className="w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:opacity-50 transition-all mt-4 shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
         >
           {submitting ? 'Submitting...' : 'Confirm Loan Request'}
         </button>
