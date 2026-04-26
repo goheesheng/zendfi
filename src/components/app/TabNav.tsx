@@ -24,7 +24,7 @@ export function TabNav() {
             className={`flex-1 text-center py-3 px-2 rounded-[30px] font-semibold text-[13px] transition-all ${
               isActive
                 ? 'bg-zend-blue text-white shadow-[0_4px_12px_rgba(93,116,255,0.3)]'
-                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
             }`}
           >
             {tab.label}
