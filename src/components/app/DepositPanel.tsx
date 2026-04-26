@@ -22,7 +22,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
           type="text"
           value={amount}
           onChange={(e) => onAmountChange(e.target.value)}
-          className="flex-1 bg-transparent text-2xl font-medium text-gray-900 outline-none placeholder-gray-300"
+          className="flex-1 bg-transparent text-2xl font-medium text-gray-900 outline-none placeholder-gray-300 min-h-[44px]"
           placeholder="0.0"
         />
         <button
