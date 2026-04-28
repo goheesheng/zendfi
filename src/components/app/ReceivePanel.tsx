@@ -7,7 +7,7 @@ interface Props {
 
 export function ReceivePanel({ amount, onOpenStrikeModal }: Props) {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-200">
+    <div className="bg-white rounded-2xl p-5 border border-zend-accent-soft shadow-sm hover:border-zend-blue/40 hover:shadow-md transition-all duration-200">
       <div className="text-xs text-gray-400 mb-2">Receive</div>
       <div className="flex items-center justify-between gap-3">
         <span className="flex-1 text-2xl font-medium text-gray-900">
@@ -15,7 +15,7 @@ export function ReceivePanel({ amount, onOpenStrikeModal }: Props) {
         </span>
         <button
           onClick={onOpenStrikeModal}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-200 hover:border-zend-blue/40 focus:border-zend-blue/50 transition-colors shrink-0"
+          className="flex items-center gap-2 px-3 py-2 bg-zend-accent-soft/30 rounded-xl border border-zend-accent-soft hover:border-zend-blue/50 focus:border-zend-blue/60 transition-colors shrink-0"
         >
           <span className="text-lg text-gray-900">$</span>
           <span className="font-semibold text-sm text-gray-900">USDC</span>

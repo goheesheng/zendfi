@@ -60,7 +60,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 rounded-full bg-white border-2 border-zend-accent-soft flex items-center justify-center shadow-sm">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 rounded-full bg-white border-2 border-zend-accent-soft flex items-center justify-center shadow-sm">
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
@@ -78,7 +78,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
+        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(6,214,160,0.3)]"
       >
         Review
       </button>

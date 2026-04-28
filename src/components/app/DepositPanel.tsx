@@ -15,7 +15,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
   const asset = LOAN_ASSETS[state.selectedCollateral as AssetKey];
 
   return (
-    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-200">
+    <div className="bg-white rounded-2xl p-5 border border-zend-accent-soft shadow-sm hover:border-zend-blue/40 hover:shadow-md transition-all duration-200">
       <div className="text-xs text-gray-400 mb-2">Deposit</div>
       <div className="flex items-center justify-between gap-3">
         <input
@@ -27,7 +27,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
         />
         <button
           onClick={onOpenCollateralModal}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-200 hover:border-zend-blue/40 focus:border-zend-blue/50 transition-colors shrink-0"
+          className="flex items-center gap-2 px-3 py-2 bg-zend-accent-soft/30 rounded-xl border border-zend-accent-soft hover:border-zend-blue/50 focus:border-zend-blue/60 transition-colors shrink-0"
         >
           <span className="text-lg">{asset.icon}</span>
           <span className="font-semibold text-sm text-gray-900">{asset.symbol}</span>

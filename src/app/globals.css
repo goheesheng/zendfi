@@ -13,7 +13,7 @@
   --zend-glass: rgba(255, 255, 255, 0.04);
   --zend-glass-border: rgba(255, 255, 255, 0.08);
   --zend-glass-hover: rgba(255, 255, 255, 0.08);
-  --zend-glow: rgba(93, 116, 255, 0.2);
+  --zend-glow: rgba(6, 214, 160, 0.2);
 }
 
 /* Serif headings with refined tracking */
@@ -35,7 +35,7 @@ h1, h2, h3 {
 
 /* Focus-visible ring for keyboard accessibility */
 :focus-visible {
-  outline: 2px solid rgba(93, 116, 255, 0.6);
+  outline: 2px solid rgba(6, 214, 160, 0.6);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -47,7 +47,7 @@ h1, h2, h3 {
 
 /* Selection color */
 ::selection {
-  background: rgba(93, 116, 255, 0.4);
+  background: rgba(6, 214, 160, 0.4);
   color: white;
 }
 
@@ -67,7 +67,7 @@ h1, h2, h3 {
 /* Accent glow on focus for inputs */
 input:focus, select:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(93, 116, 255, 0.4);
+  box-shadow: 0 0 0 2px rgba(6, 214, 160, 0.4);
 }
 
 /* Custom scrollbar for dark theme */
@@ -154,13 +154,13 @@ input:focus, select:focus {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(93, 116, 255, 0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
-  50% { box-shadow: 0 0 40px rgba(93, 116, 255, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); }
+  0%, 100% { box-shadow: 0 0 20px rgba(6, 214, 160, 0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 40px rgba(6, 214, 160, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); }
 }
 
 @keyframes border-glow {
-  0%, 100% { border-color: rgba(93, 116, 255, 0.2); }
-  50% { border-color: rgba(93, 116, 255, 0.5); }
+  0%, 100% { border-color: rgba(6, 214, 160, 0.2); }
+  50% { border-color: rgba(6, 214, 160, 0.5); }
 }
 
 @keyframes noise {

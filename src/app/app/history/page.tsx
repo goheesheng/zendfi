@@ -15,7 +15,7 @@ export default function HistoryPage() {
         </div>
         <p className="text-gray-900 font-semibold mb-1">No history yet</p>
         <p className="text-sm text-gray-400 mb-6">Completed, exercised, and expired loans will show up here.</p>
-        <a href="/app" className="inline-block px-6 py-2.5 rounded-xl bg-zend-blue text-white text-sm font-semibold hover:bg-zend-blue-dark transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]">
+        <a href="/app" className="inline-block px-6 py-2.5 rounded-xl bg-zend-blue text-white text-sm font-semibold hover:bg-zend-blue-dark transition-all shadow-[0_4px_16px_rgba(6,214,160,0.3)]">
           Start Borrowing
         </a>
       </div>
