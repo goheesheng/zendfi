@@ -31,11 +31,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <LoanProvider>
         <ThetanutsProvider>
           <ToastProvider>
-            <main className="min-h-screen bg-gray-50 text-gray-900">
-              <div className="max-w-3xl mx-auto px-6 py-6">
+            <main className="min-h-screen bg-zend-bg bg-surface-mesh text-zend-ink">
+              <div className="max-w-[520px] mx-auto px-5 py-8">
                 <Header onOpenSettings={() => setSettingsOpen(true)} />
                 <TabNav />
-                <AppInner>{children}</AppInner>
+                <div className="animate-slide-up">
+                  <AppInner>{children}</AppInner>
+                </div>
               </div>
             </main>
             <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />

@@ -46,9 +46,9 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
   return (
     <div className="flex flex-col gap-0">
       {mmLiquidity !== '--' && (
-        <div className="mb-4 px-4 py-2.5 rounded-xl bg-gradient-to-r from-zend-blue/5 to-purple-500/5 border border-zend-blue/15 text-center">
-          <span className="text-xs text-zend-blue font-medium">
-            Alpha Release — <span className="font-semibold">{mmLiquidity} USDC</span> available from market makers
+        <div className="mb-5 px-4 py-3 rounded-xl bg-zend-electric-soft border border-zend-electric/15 text-center">
+          <span className="text-xs font-heading font-semibold text-zend-electric">
+            Alpha Release — <span className="font-bold">{mmLiquidity} USDC</span> available
           </span>
         </div>
       )}
@@ -59,17 +59,17 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
         onOpenCollateralModal={onOpenCollateralModal}
       />
 
-      <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm">
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+      <div className="flex justify-center -my-2.5 relative z-10">
+        <div className="w-9 h-9 rounded-full bg-zend-surface border-2 border-zend-border flex items-center justify-center shadow-sm">
+          <svg className="w-4 h-4 text-zend-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
 
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
-      <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm">
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+      <div className="flex justify-center -my-2.5 relative z-10">
+        <div className="w-9 h-9 rounded-full bg-zend-surface border-2 border-zend-border flex items-center justify-center shadow-sm">
+          <svg className="w-4 h-4 text-zend-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
 
@@ -78,9 +78,9 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(93,116,255,0.3)]"
+        className="mt-7 w-full py-4 rounded-2xl font-heading font-bold text-[15px] tracking-wide text-white bg-coral-gradient disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:cursor-not-allowed transition-all duration-200 shadow-coral-glow hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]"
       >
-        Review
+        Review Loan
       </button>
     </div>
   );
