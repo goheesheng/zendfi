@@ -29,7 +29,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
         />
         <button
           onClick={onOpenCollateralModal}
-          className="flex items-center gap-2 px-3 py-2 bg-zend-accent-soft/30 rounded-xl border border-zend-accent-soft hover:border-zend-blue/50 focus:border-zend-blue/60 transition-colors shrink-0"
+          className="flex items-center gap-2 px-4 py-2.5 min-h-[44px] bg-zend-accent-soft/30 rounded-xl border border-zend-accent-soft hover:border-zend-blue/50 focus:border-zend-blue/60 transition-colors shrink-0"
         >
           <TokenIcon symbol={asset.symbol} size={20} />
           <span className="font-semibold text-sm text-gray-900">{asset.symbol}</span>
