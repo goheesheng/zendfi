@@ -13,6 +13,7 @@ import { useToast } from '@/components/ui/Toast';
 import { calculateLoanParams } from '@/services/pricing';
 import type { LoanCalculation } from '@/types';
 import type { AssetKey } from '@/services/constants';
+import { AnalyticsDashboard } from '@/components/app/AnalyticsDashboard';
 
 export default function BorrowPage() {
   const { state, setActiveRequest } = useLoanContext();
@@ -82,15 +83,26 @@ export default function BorrowPage() {
 
   return (
     <>
-      <SwapInterface
-        onReview={() => setReviewOpen(true)}
-        onOpenCollateralModal={() => setCollateralOpen(true)}
-        onOpenStrikeModal={() => setStrikeOpen(true)}
-        depositAmount={depositAmount}
-        onDepositAmountChange={setDepositAmount}
-        receiveAmount={receiveAmount}
-        loanCalc={loanCalc}
-      />
+      <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
+        <div>
+          <SwapInterface
+            onReview={() => setReviewOpen(true)}
+            onOpenCollateralModal={() => setCollateralOpen(true)}
+            onOpenStrikeModal={() => setStrikeOpen(true)}
+            depositAmount={depositAmount}
+            onDepositAmountChange={setDepositAmount}
+            receiveAmount={receiveAmount}
+            loanCalc={loanCalc}
+          />
+        </div>
+        <div className="hidden lg:block">
+          <AnalyticsDashboard />
+        </div>
+      </div>
+      {/* Mobile analytics below */}
+      <div className="lg:hidden mt-8">
+        <AnalyticsDashboard />
+      </div>
       <CollateralModal open={collateralOpen} onClose={() => setCollateralOpen(false)} />
       <StrikeModal open={strikeOpen} onClose={() => setStrikeOpen(false)} />
       <ReviewModal

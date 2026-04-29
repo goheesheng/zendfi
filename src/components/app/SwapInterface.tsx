@@ -73,14 +73,29 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
         </div>
       </div>
 
-      <PaybackPanel expiryDate={expiryDate} repayAmount={repayAmount} effectiveApr={effectiveApr} />
+      {/* Expanded cost summary when loan is calculated */}
+      {loanCalc ? (
+        <div className="bg-white rounded-2xl p-4 border border-zend-accent-soft shadow-sm">
+          <div className="space-y-0 text-sm">
+            <div className="flex justify-between py-1"><span className="text-gray-400">Strike</span><span className="font-semibold text-gray-900">${state.selectedStrike?.toLocaleString()}{loanCalc.isPromo ? ' 🔥' : ''}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400">Expiry</span><span className="font-semibold text-gray-900">{expiryDate}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400">Repayment</span><span className="font-semibold text-gray-900">{repayAmount}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400">Interest</span><span className="font-semibold text-gray-900">{loanCalc.capitalCostFormatted} USDC</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400">Option Premium</span><span className="font-semibold text-gray-900">{loanCalc.optionCostFormatted} USDC{loanCalc.isPromo ? ' (waived)' : ''}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400">Protocol Fee</span><span className="font-semibold text-gray-900">{loanCalc.protocolFeeFormatted} USDC</span></div>
+            <div className="flex justify-between py-1 border-t border-gray-100 mt-1 pt-2"><span className="text-gray-400 font-medium">Effective APR</span><span className="font-bold text-emerald-500">{effectiveApr}</span></div>
+          </div>
+        </div>
+      ) : (
+        <PaybackPanel expiryDate={expiryDate} repayAmount={repayAmount} effectiveApr={effectiveApr} />
+      )}
 
       <button
         onClick={onReview}
         disabled={!canReview}
         className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(6,214,160,0.3)]"
       >
-        Review
+        Review Loan
       </button>
     </div>
   );

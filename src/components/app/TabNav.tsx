@@ -14,17 +14,17 @@ export function TabNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex mb-6 bg-white p-[5px] rounded-[36px] border border-gray-200 gap-1 shadow-sm">
+    <nav className="flex gap-6 mb-6 border-b border-gray-200">
       {tabs.map((tab) => {
         const isActive = tab.href === '/app' ? pathname === '/app' : pathname.startsWith(tab.href);
         return (
           <Link
             key={tab.href}
             href={tab.href}
-            className={`flex-1 text-center py-3 px-2 rounded-[30px] font-semibold text-[13px] transition-all ${
+            className={`pb-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               isActive
-                ? 'bg-zend-blue text-white shadow-[0_4px_12px_rgba(6,214,160,0.3)]'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'text-gray-900 border-zend-blue'
+                : 'text-gray-400 border-transparent hover:text-gray-600'
             }`}
           >
             {tab.label}
