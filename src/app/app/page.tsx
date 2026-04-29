@@ -88,6 +88,7 @@ export default function BorrowPage() {
           <AnalyticsDashboard />
         </div>
         <div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">New Loan</h2>
           <SwapInterface
             onReview={() => setReviewOpen(true)}
             onOpenCollateralModal={() => setCollateralOpen(true)}
