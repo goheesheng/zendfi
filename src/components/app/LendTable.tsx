@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import { useThetanuts } from '@/context/ThetanutsContext';
 import { useToast } from '@/components/ui/Toast';
+import { TokenIcon } from '@/components/ui/TokenIcon';
 import {
   LOAN_ASSETS,
   STRIKE_DECIMALS,
@@ -191,7 +192,7 @@ function LendRow({
       <tr className="hidden md:table-row border-b border-gray-100 hover:bg-gray-50 transition-colors">
         <td className="py-5 pl-4">
           <div className="flex items-center gap-3">
-            <span className="text-2xl leading-none">{icon}</span>
+            <TokenIcon symbol={symbol} size={28} />
             <div>
               <span className="font-semibold text-gray-900 text-base">{symbol}</span>
               <div className="text-[10px] text-gray-400 mt-0.5">QID #{opp.quotationId}</div>
@@ -231,7 +232,7 @@ function LendRow({
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-xl leading-none">{icon}</span>
+                <TokenIcon symbol={symbol} size={22} />
                 <span className="font-semibold text-gray-900">{symbol}</span>
                 <span className="text-[10px] text-gray-400">#{opp.quotationId}</span>
               </div>

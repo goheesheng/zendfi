@@ -3,6 +3,7 @@
 import { Modal } from '@/components/ui/Modal';
 import { LOAN_ASSETS } from '@/services/constants';
 import { useLoanContext } from '@/context/LoanContext';
+import { TokenIcon } from '@/components/ui/TokenIcon';
 
 export function CollateralModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { state, setCollateral } = useLoanContext();
@@ -20,7 +21,7 @@ export function CollateralModal({ open, onClose }: { open: boolean; onClose: () 
                 : 'border-gray-200 hover:border-zend-blue/40 hover:shadow-sm'
             }`}
           >
-            <span className="text-2xl">{asset.icon}</span>
+            <TokenIcon symbol={asset.symbol} size={28} />
             <span className="font-semibold text-gray-900">{asset.symbol}</span>
           </button>
         ))}

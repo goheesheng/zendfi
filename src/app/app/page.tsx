@@ -83,7 +83,10 @@ export default function BorrowPage() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8">
+        <div className="hidden lg:block">
+          <AnalyticsDashboard />
+        </div>
         <div>
           <SwapInterface
             onReview={() => setReviewOpen(true)}
@@ -95,11 +98,8 @@ export default function BorrowPage() {
             loanCalc={loanCalc}
           />
         </div>
-        <div className="hidden lg:block">
-          <AnalyticsDashboard />
-        </div>
       </div>
-      {/* Mobile analytics below */}
+      {/* Mobile: borrow first, analytics below */}
       <div className="lg:hidden mt-8">
         <AnalyticsDashboard />
       </div>

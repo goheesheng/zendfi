@@ -1,5 +1,7 @@
 'use client';
 
+import { TokenIcon } from '@/components/ui/TokenIcon';
+
 interface Props {
   amount: string;
   onOpenStrikeModal: () => void;
@@ -17,7 +19,7 @@ export function ReceivePanel({ amount, onOpenStrikeModal }: Props) {
           onClick={onOpenStrikeModal}
           className="flex items-center gap-2 px-3 py-2 bg-zend-accent-soft/30 rounded-xl border border-zend-accent-soft hover:border-zend-blue/50 focus:border-zend-blue/60 transition-colors shrink-0"
         >
-          <span className="text-lg text-gray-900">$</span>
+          <TokenIcon symbol="USDC" size={20} />
           <span className="font-semibold text-sm text-gray-900">USDC</span>
           <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
         </button>

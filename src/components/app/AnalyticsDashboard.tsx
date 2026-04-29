@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useBalances } from '@/hooks/useBalances';
 import { useLoanContext } from '@/context/LoanContext';
+import { TokenIcon } from '@/components/ui/TokenIcon';
 import {
   LOAN_COORDINATOR_ADDRESS,
   OPTION_FACTORY_ADDRESS,
@@ -83,7 +84,7 @@ export function AnalyticsDashboard() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900">Market Overview</h2>
+      <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">Market Overview <TokenIcon symbol="ETH" size={22} /></h2>
 
       {/* Stats Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
