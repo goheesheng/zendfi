@@ -225,7 +225,7 @@ export function AnalyticsDashboard() {
             <button
               key={f}
               onClick={() => setActivityFilter(f)}
-              className={`text-sm font-medium pb-1 border-b-2 transition-colors capitalize ${
+              className={`text-sm font-medium py-2 px-1 border-b-2 transition-colors capitalize min-h-[44px] ${
                 activityFilter === f ? 'text-gray-900 border-zend-blue' : 'text-gray-400 border-transparent'
               }`}
             >
