@@ -21,7 +21,7 @@ export function TabNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`pb-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+            className={`pb-3 pt-1 px-1 text-sm font-medium transition-colors border-b-2 -mb-px min-h-[44px] flex items-center ${
               isActive
                 ? 'text-gray-900 border-zend-blue'
                 : 'text-gray-400 border-transparent hover:text-gray-600'
