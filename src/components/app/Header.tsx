@@ -5,7 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 export function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
   return (
     <header className="flex justify-between items-center mb-4">
-      <span className="font-display text-lg font-semibold text-gray-900 tracking-tight">Zend<span className="text-zend-blue">Fi</span></span>
+      <span className="font-display text-lg font-semibold text-gray-900 tracking-tight">Zend<span className="text-purple-500">Fi</span></span>
       <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
       <div className="flex items-center gap-2">
         <button
