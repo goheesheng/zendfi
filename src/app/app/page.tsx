@@ -14,6 +14,7 @@ import { calculateLoanParams } from '@/services/pricing';
 import type { LoanCalculation } from '@/types';
 import type { AssetKey } from '@/services/constants';
 import { AnalyticsDashboard } from '@/components/app/AnalyticsDashboard';
+import { BorrowSidebar } from '@/components/app/BorrowSidebar';
 
 export default function BorrowPage() {
   const { state, setActiveRequest } = useLoanContext();
@@ -98,6 +99,9 @@ export default function BorrowPage() {
             receiveAmount={receiveAmount}
             loanCalc={loanCalc}
           />
+          <div className="hidden lg:block">
+            <BorrowSidebar />
+          </div>
         </div>
       </div>
       {/* Mobile: borrow first, analytics below */}
