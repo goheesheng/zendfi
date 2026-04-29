@@ -90,12 +90,12 @@ export function AnalyticsDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">ETH Price</div>
-          <div className="text-xl font-bold text-gray-900">{ethPrice}</div>
+          <div className="text-xl font-bold text-gray-900">{ethPrice !== '--' ? ethPrice : <span className="text-sm text-gray-300">Loading...</span>}</div>
           <div className="text-[11px] text-gray-300 mt-1">Chainlink Oracle</div>
         </div>
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">MM Liquidity</div>
-          <div className="text-xl font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : '--'}</div>
+          <div className="text-xl font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : <span className="text-sm text-gray-300">Loading...</span>}</div>
           <div className="text-[11px] text-gray-300 mt-1">USDC available</div>
         </div>
         <div className="bg-white border border-gray-200 rounded-xl p-4">
