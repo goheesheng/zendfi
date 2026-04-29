@@ -25,6 +25,7 @@ export function DepositPanel({ amount, onAmountChange, balance, onOpenCollateral
           onChange={(e) => onAmountChange(e.target.value)}
           className="flex-1 bg-transparent text-2xl font-medium text-gray-900 outline-none placeholder-gray-300 min-h-[44px]"
           placeholder="0.0"
+          aria-label="Deposit amount"
         />
         <button
           onClick={onOpenCollateralModal}
