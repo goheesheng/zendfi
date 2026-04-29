@@ -112,7 +112,7 @@ export function AnalyticsDashboard() {
 
       {/* Option Premium Chart */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-1">Option Premium vs Strike Price</h4>
+        <h3className="text-sm font-semibold text-gray-900 mb-1">Option Premium vs Strike Price</h3>
         <p className="text-[11px] text-gray-400 mb-3">Lower strike = higher premium (more protection costs more)</p>
         <div className="h-[100px] bg-gradient-to-b from-blue-50 to-white rounded-lg flex items-end px-2 pb-2 gap-[3px]">
           {premiumBars.map((h, i) => (
@@ -133,10 +133,10 @@ export function AnalyticsDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Loan Parameters */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <h3className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-zend-blue" />
             Loan Parameters
-          </h4>
+          </h3>
           <div className="space-y-0">
             {[
               ['Max LTV', '50%'],
@@ -156,10 +156,10 @@ export function AnalyticsDashboard() {
 
         {/* Cost Breakdown */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <h3className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             Cost Breakdown
-          </h4>
+          </h3>
           <div className="space-y-0">
             {[
               ['Interest (APR)', `${PROMO_CONFIG.promoBorrowingFeePercent}%`, 'badge'],
@@ -184,7 +184,7 @@ export function AnalyticsDashboard() {
 
       {/* Expiry Scenarios */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-3">What Happens at Expiry?</h4>
+        <h3className="text-sm font-semibold text-gray-900 mb-3">What Happens at Expiry?</h3>
         <table className="w-full text-sm">
           <thead>
             <tr className="text-[11px] text-gray-400 uppercase tracking-wider">
@@ -219,7 +219,7 @@ export function AnalyticsDashboard() {
 
       {/* Recent Activity */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-3">Recent Protocol Activity</h4>
+        <h3className="text-sm font-semibold text-gray-900 mb-3">Recent Protocol Activity</h3>
         <div className="flex gap-4 mb-3">
           {(['all', 'borrows', 'settlements'] as const).map((f) => (
             <button
@@ -257,7 +257,7 @@ export function AnalyticsDashboard() {
 
       {/* Contract Addresses */}
       <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-3">Contract Addresses</h4>
+        <h3className="text-sm font-semibold text-gray-900 mb-3">Contract Addresses</h3>
         <div className="space-y-0">
           {[
             ['LoanCoordinator', LOAN_COORDINATOR_ADDRESS],
