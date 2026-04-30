@@ -36,18 +36,18 @@ export function StrikeModal({ open, onClose }: { open: boolean; onClose: () => v
       {loading ? (
         <div className="text-center py-8">
           <div className="w-6 h-6 border-2 border-zend-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-gray-400 text-sm">Loading options...</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">Loading options...</p>
         </div>
       ) : error ? (
         <p className="text-center text-red-500 py-8 text-sm">{error}</p>
       ) : totalOptions === 0 ? (
-        <p className="text-center text-gray-400 py-8 text-sm">No options available. Try adjusting settings (lower min duration).</p>
+        <p className="text-center text-gray-400 dark:text-gray-500 py-8 text-sm">No options available. Try adjusting settings (lower min duration).</p>
       ) : (
         <div className="max-h-96 overflow-y-auto space-y-1">
           {groups.map((group) => (
             <div key={group.expiryLabel}>
-              <div className="sticky top-0 bg-white py-2 px-1 z-10">
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+              <div className="sticky top-0 bg-white dark:bg-zend-card py-2 px-1 z-10">
+                <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">
                   {group.expiryFormatted}
                 </span>
               </div>
@@ -65,10 +65,10 @@ export function StrikeModal({ open, onClose }: { open: boolean; onClose: () => v
                       });
                       onClose();
                     }}
-                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 hover:border-zend-blue/40 hover:bg-gray-50 hover:shadow-sm transition-all duration-200"
+                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-zend-border hover:border-zend-blue/40 hover:bg-gray-50 dark:hover:bg-zend-input hover:shadow-sm transition-all duration-200"
                   >
                     <div className="text-left">
-                      <div className="font-semibold text-gray-900 text-sm">
+                      <div className="font-semibold text-gray-900 dark:text-white text-sm">
                         {opt.strikeFormatted}
                         {opt.isPromo && (
                           <span className="ml-2 text-xs text-orange-500 font-medium">🔥 Promo</span>

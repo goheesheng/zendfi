@@ -39,41 +39,41 @@ export function LoanCard({ loan, onExercise, onDoNotExercise, onCancel }: Props)
   const displayStatus = inExerciseWindow ? 'action' : loan.status;
 
   return (
-    <div className="bg-white rounded-2xl p-6 mb-4 border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div className="bg-white dark:bg-zend-card rounded-2xl p-6 mb-4 border border-gray-200 dark:border-zend-border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex justify-between items-center mb-5">
-        <span className="font-semibold text-gray-900 text-xl">Loan #{loan.quotationId.toString()}</span>
+        <span className="font-semibold text-gray-900 dark:text-white text-xl">Loan #{loan.quotationId.toString()}</span>
         <Badge status={displayStatus} />
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-5">
-        <div className="bg-gray-50 rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-gray-400 mb-1.5">Deposited</div>
-          <div className="font-semibold text-gray-900 text-base">{parseFloat(collateral).toFixed(6)} {symbol}</div>
+        <div className="bg-gray-50 dark:bg-zend-bg rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">Deposited</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-base">{parseFloat(collateral).toFixed(6)} {symbol}</div>
         </div>
-        <div className="bg-gray-50 rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-gray-400 mb-1.5">Borrowed</div>
-          <div className="font-semibold text-gray-900 text-base">{borrowed ? `${borrowed} USDC` : '--'}</div>
+        <div className="bg-gray-50 dark:bg-zend-bg rounded-xl p-4">
+          <div className="text-[11px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">Borrowed</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-base">{borrowed ? `${borrowed} USDC` : '--'}</div>
         </div>
       </div>
 
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-400">Strike</span>
-          <span className="text-gray-900">${strikeFormatted}</span>
+          <span className="text-gray-400 dark:text-gray-500">Strike</span>
+          <span className="text-gray-900 dark:text-white">${strikeFormatted}</span>
         </div>
         {repayment && (
           <div className="flex justify-between">
-            <span className="text-gray-400">Repayment</span>
-            <span className="text-gray-900">{repayment} USDC</span>
+            <span className="text-gray-400 dark:text-gray-500">Repayment</span>
+            <span className="text-gray-900 dark:text-white">{repayment} USDC</span>
           </div>
         )}
         <div className="flex justify-between">
-          <span className="text-gray-400">Expiry</span>
-          <span className="text-gray-900">{formatDate(loan.expiryTimestamp)}</span>
+          <span className="text-gray-400 dark:text-gray-500">Expiry</span>
+          <span className="text-gray-900 dark:text-white">{formatDate(loan.expiryTimestamp)}</span>
         </div>
         {loan.optionAddress && (
           <div className="flex justify-between">
-            <span className="text-gray-400">Option</span>
+            <span className="text-gray-400 dark:text-gray-500">Option</span>
             <a
               href={`https://basescan.org/address/${loan.optionAddress}`}
               target="_blank"
@@ -98,7 +98,7 @@ export function LoanCard({ loan, onExercise, onDoNotExercise, onCancel }: Props)
       )}
 
       {loan.status === 'competing' && (
-        <button onClick={() => onCancel(loan.quotationId.toString())} className="w-full mt-4 py-2.5 rounded-xl border border-gray-200 text-gray-400 font-semibold text-sm hover:border-red-300 hover:text-red-500 transition-colors">
+        <button onClick={() => onCancel(loan.quotationId.toString())} className="w-full mt-4 py-2.5 rounded-xl border border-gray-200 dark:border-zend-border text-gray-400 dark:text-gray-500 font-semibold text-sm hover:border-red-300 hover:text-red-500 transition-colors">
           Cancel Request
         </button>
       )}

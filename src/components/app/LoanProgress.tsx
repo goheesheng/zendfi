@@ -85,15 +85,15 @@ export function LoanProgress({ onCancel, onDismiss }: Props) {
             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-bold transition-all duration-300 ${
               steps[i] === 'completed' ? 'bg-emerald-500 text-white' :
               steps[i] === 'active' ? 'bg-zend-blue text-white animate-pulse' :
-              'bg-gray-200 text-gray-400'
+              'bg-gray-200 dark:bg-zend-border text-gray-400 dark:text-gray-500'
             }`}>
               {steps[i] === 'completed' ? '✓' : i + 1}
             </div>
             <div>
-              <div className={`font-semibold text-sm ${steps[i] === 'pending' ? 'text-gray-400' : 'text-gray-900'}`}>
+              <div className={`font-semibold text-sm ${steps[i] === 'pending' ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'}`}>
                 {step.title}
               </div>
-              <div className="text-xs text-gray-400">{step.desc}</div>
+              <div className="text-xs text-gray-400 dark:text-gray-500">{step.desc}</div>
             </div>
           </div>
         ))}
@@ -101,11 +101,11 @@ export function LoanProgress({ onCancel, onDismiss }: Props) {
 
       {activeLoan && activeLoan.offers.length > 0 && steps[2] === 'active' && (
         <div className="space-y-2 mt-4">
-          <h4 className="text-sm font-semibold text-gray-900">Offers received:</h4>
+          <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Offers received:</h4>
           {activeLoan.offers.map((offer, i) => (
-            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zend-bg rounded-xl border border-gray-200 dark:border-zend-border">
               <div>
-                <div className="font-semibold text-sm text-gray-900">
+                <div className="font-semibold text-sm text-gray-900 dark:text-white">
                   {offer.offeror.slice(0, 6)}...{offer.offeror.slice(-4)}
                 </div>
                 <div className="text-xs text-emerald-600">
@@ -138,7 +138,7 @@ export function LoanProgress({ onCancel, onDismiss }: Props) {
             View Loan Details
           </button>
         ) : (
-          <button onClick={onCancel} className="w-full py-3 rounded-xl font-semibold border border-gray-200 text-gray-400 hover:border-red-300 hover:text-red-500 transition-colors">
+          <button onClick={onCancel} className="w-full py-3 rounded-xl font-semibold border border-gray-200 dark:border-zend-border text-gray-400 dark:text-gray-500 hover:border-red-300 hover:text-red-500 transition-colors">
             Cancel Request
           </button>
         )}

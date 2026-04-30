@@ -1,16 +1,18 @@
 'use client';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
   return (
     <header className="flex justify-between items-center mb-4">
-      <span className="font-display text-lg font-semibold text-gray-900 tracking-tight">Zend<span className="text-purple-500">Fi</span></span>
+      <span className="font-display text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Zend<span className="text-purple-500">Fi</span></span>
       <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <button
           onClick={onOpenSettings}
-          className="w-11 h-11 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-zend-blue/40 hover:text-gray-600 transition-all"
+          className="w-11 h-11 flex items-center justify-center rounded-xl border border-gray-200 dark:border-zend-border text-gray-400 dark:text-gray-500 hover:border-zend-blue/40 hover:text-gray-600 dark:hover:text-white transition-all"
           title="Settings"
           aria-label="Open settings"
         >

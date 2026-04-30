@@ -1,7 +1,6 @@
 'use client';
 
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Providers } from '@/app/providers';
 import { LoanProvider } from '@/context/LoanContext';
 import { ThetanutsProvider } from '@/context/ThetanutsContext';
@@ -19,19 +18,14 @@ function AppInner({ children }: { children: React.ReactNode }) {
 }
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { setTheme } = useTheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
-
-  useEffect(() => {
-    setTheme('light');
-  }, [setTheme]);
 
   return (
     <Providers>
       <LoanProvider>
         <ThetanutsProvider>
           <ToastProvider>
-            <main className="min-h-screen bg-gray-50 text-gray-900">
+            <main className="min-h-screen bg-gray-50 dark:bg-zend-bg text-gray-900 dark:text-white">
               <div className="max-w-[1100px] mx-auto px-6 py-6">
                 <Header onOpenSettings={() => setSettingsOpen(true)} />
                 <TabNav />

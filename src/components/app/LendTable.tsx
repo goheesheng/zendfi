@@ -165,9 +165,9 @@ function LendRow({
   const isWalletConnected = !!address;
 
   const actionButton = isExpired ? (
-    <span className="text-xs text-gray-400">Expired</span>
+    <span className="text-xs text-gray-400 dark:text-gray-500">Expired</span>
   ) : !isWalletConnected ? (
-    <span className="text-xs text-gray-400">Connect wallet</span>
+    <span className="text-xs text-gray-400 dark:text-gray-500">Connect wallet</span>
   ) : rowState.approved === false ? (
     <button
       onClick={handleApprove}
@@ -189,29 +189,29 @@ function LendRow({
   return (
     <>
       {/* Desktop row */}
-      <tr className="hidden md:table-row border-b border-gray-100 hover:bg-gray-50 transition-colors">
+      <tr className="hidden md:table-row border-b border-gray-100 dark:border-zend-border/50 hover:bg-gray-50 dark:hover:bg-zend-input transition-colors">
         <td className="py-5 pl-4">
           <div className="flex items-center gap-3">
             <TokenIcon symbol={symbol} size={28} />
             <div>
-              <span className="font-semibold text-gray-900 text-base">{symbol}</span>
-              <div className="text-[10px] text-gray-400 mt-0.5">QID #{opp.quotationId}</div>
+              <span className="font-semibold text-gray-900 dark:text-white text-base">{symbol}</span>
+              <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">QID #{opp.quotationId}</div>
             </div>
           </div>
         </td>
         <td className="py-5 text-right">
-          <div className="font-semibold text-gray-900 text-base">{lendAmountFormatted}</div>
-          <div className="text-gray-400 text-xs mt-0.5">USDC</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-base">{lendAmountFormatted}</div>
+          <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">USDC</div>
         </td>
         <td className="py-5 text-right">
-          <div className="font-semibold text-gray-900 text-base">
+          <div className="font-semibold text-gray-900 dark:text-white text-base">
             {Number(collateralFormatted).toFixed(decimals === 18 ? 6 : 8)}
           </div>
-          <div className="text-gray-400 text-xs mt-0.5">{symbol}</div>
+          <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">{symbol}</div>
         </td>
         <td className="py-5 text-right">
-          <div className="font-semibold text-gray-900 text-base">{repaymentFormatted}</div>
-          <div className="text-gray-400 text-xs mt-0.5">USDC</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-base">{repaymentFormatted}</div>
+          <div className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">USDC</div>
         </td>
         <td className="py-5 text-center">
           <span className={`text-base font-bold ${apr > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
@@ -219,7 +219,7 @@ function LendRow({
           </span>
         </td>
         <td className="py-5 text-center">
-          <span className={`text-sm ${isExpired ? 'text-red-400' : 'text-gray-300'}`}>
+          <span className={`text-sm ${isExpired ? 'text-red-400' : 'text-gray-300 dark:text-gray-600'}`}>
             {expiryDate}
           </span>
         </td>
@@ -229,12 +229,12 @@ function LendRow({
       {/* Mobile card */}
       <tr className="md:hidden">
         <td colSpan={7} className="p-0">
-          <div className="p-4 border-b border-gray-100">
+          <div className="p-4 border-b border-gray-100 dark:border-zend-border/50">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <TokenIcon symbol={symbol} size={22} />
-                <span className="font-semibold text-gray-900">{symbol}</span>
-                <span className="text-[10px] text-gray-400">#{opp.quotationId}</span>
+                <span className="font-semibold text-gray-900 dark:text-white">{symbol}</span>
+                <span className="text-[10px] text-gray-400 dark:text-gray-500">#{opp.quotationId}</span>
               </div>
               <span className={`text-base font-bold ${apr > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
                 {apr > 0 ? `${apr.toFixed(1)}% APR` : '--'}
@@ -242,20 +242,20 @@ function LendRow({
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm mb-3">
               <div>
-                <div className="text-[11px] text-gray-400 uppercase tracking-wider">You Provide</div>
-                <div className="font-semibold text-gray-900">{lendAmountFormatted} <span className="text-gray-400 text-xs">USDC</span></div>
+                <div className="text-[11px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">You Provide</div>
+                <div className="font-semibold text-gray-900 dark:text-white">{lendAmountFormatted} <span className="text-gray-400 dark:text-gray-500 text-xs">USDC</span></div>
               </div>
               <div className="text-right">
-                <div className="text-[11px] text-gray-400 uppercase tracking-wider">Repayment</div>
-                <div className="font-semibold text-gray-900">{repaymentFormatted} <span className="text-gray-400 text-xs">USDC</span></div>
+                <div className="text-[11px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">Repayment</div>
+                <div className="font-semibold text-gray-900 dark:text-white">{repaymentFormatted} <span className="text-gray-400 dark:text-gray-500 text-xs">USDC</span></div>
               </div>
               <div>
-                <div className="text-[11px] text-gray-400 uppercase tracking-wider">Collateral</div>
-                <div className="font-semibold text-gray-900">{Number(collateralFormatted).toFixed(decimals === 18 ? 4 : 6)} <span className="text-gray-400 text-xs">{symbol}</span></div>
+                <div className="text-[11px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">Collateral</div>
+                <div className="font-semibold text-gray-900 dark:text-white">{Number(collateralFormatted).toFixed(decimals === 18 ? 4 : 6)} <span className="text-gray-400 dark:text-gray-500 text-xs">{symbol}</span></div>
               </div>
               <div className="text-right">
-                <div className="text-[11px] text-gray-400 uppercase tracking-wider">Expiry</div>
-                <div className={`font-semibold ${isExpired ? 'text-red-400' : 'text-gray-900'}`}>{expiryDate}</div>
+                <div className="text-[11px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">Expiry</div>
+                <div className={`font-semibold ${isExpired ? 'text-red-400' : 'text-gray-900 dark:text-white'}`}>{expiryDate}</div>
               </div>
             </div>
             <div>{actionButton}</div>
@@ -269,25 +269,25 @@ function LendRow({
 export function LendTable({ opportunities, loading, onRefresh }: LendTableProps) {
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl p-8 text-center border border-gray-200 shadow-sm">
+      <div className="bg-white dark:bg-zend-card rounded-2xl p-8 text-center border border-gray-200 dark:border-zend-border shadow-sm">
         <div className="animate-pulse space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-12 rounded-lg bg-gray-100" />
+            <div key={i} className="h-12 rounded-lg bg-gray-100 dark:bg-zend-border" />
           ))}
         </div>
-        <p className="text-sm text-gray-400 mt-4">Loading lending opportunities…</p>
+        <p className="text-sm text-gray-400 dark:text-gray-500 mt-4">Loading lending opportunities…</p>
       </div>
     );
   }
 
   if (opportunities.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-12 text-center border border-gray-200 shadow-sm">
-        <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-4">
+      <div className="bg-white dark:bg-zend-card rounded-2xl p-12 text-center border border-gray-200 dark:border-zend-border shadow-sm">
+        <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
-        <p className="text-gray-900 font-semibold mb-1">No lending opportunities</p>
-        <p className="text-sm text-gray-400">
+        <p className="text-gray-900 dark:text-white font-semibold mb-1">No lending opportunities</p>
+        <p className="text-sm text-gray-400 dark:text-gray-500">
           Limit orders appear here when borrowers choose to keep their order open. Check back soon.
         </p>
       </div>
@@ -295,11 +295,11 @@ export function LendTable({ opportunities, loading, onRefresh }: LendTableProps)
   }
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+    <div className="bg-white dark:bg-zend-card rounded-2xl overflow-hidden border border-gray-200 dark:border-zend-border shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-sm tabular-nums">
           <thead>
-            <tr className="hidden md:table-row text-[11px] uppercase tracking-wider text-gray-400 border-b border-gray-100 bg-gray-50">
+            <tr className="hidden md:table-row text-[11px] uppercase tracking-wider text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-zend-border/50 bg-gray-50 dark:bg-zend-bg">
               <th className="text-left py-4 pl-4 font-medium">Asset</th>
               <th className="text-right py-4 font-medium">You Provide</th>
               <th className="text-right py-4 font-medium">You Receive</th>

@@ -60,30 +60,30 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-zend-accent-soft flex items-center justify-center shadow-sm">
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-card border-2 border-zend-accent-soft dark:border-zend-border flex items-center justify-center shadow-sm">
+          <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
 
       <ReceivePanel amount={receiveAmount} onOpenStrikeModal={onOpenStrikeModal} />
 
       <div className="flex justify-center -my-2 relative z-10">
-        <div className="w-8 h-8 rounded-full bg-white border-2 border-zend-accent-soft flex items-center justify-center shadow-sm">
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+        <div className="w-8 h-8 rounded-full bg-white dark:bg-zend-card border-2 border-zend-accent-soft dark:border-zend-border flex items-center justify-center shadow-sm">
+          <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </div>
 
       {/* Expanded cost summary when loan is calculated */}
       {loanCalc ? (
-        <div className="bg-white rounded-2xl p-4 border border-zend-accent-soft shadow-sm">
+        <div className="bg-white dark:bg-zend-card rounded-2xl p-4 border border-zend-accent-soft dark:border-zend-border shadow-sm">
           <div className="space-y-0 text-sm">
-            <div className="flex justify-between py-1"><span className="text-gray-400">Strike</span><span className="font-semibold text-gray-900">${state.selectedStrike?.toLocaleString()}{loanCalc.isPromo ? ' 🔥' : ''}</span></div>
-            <div className="flex justify-between py-1"><span className="text-gray-400">Expiry</span><span className="font-semibold text-gray-900">{expiryDate}</span></div>
-            <div className="flex justify-between py-1"><span className="text-gray-400">Repayment</span><span className="font-semibold text-gray-900">{repayAmount}</span></div>
-            <div className="flex justify-between py-1"><span className="text-gray-400">Interest</span><span className="font-semibold text-gray-900">{loanCalc.capitalCostFormatted} USDC</span></div>
-            <div className="flex justify-between py-1"><span className="text-gray-400">Option Premium</span><span className="font-semibold text-gray-900">{loanCalc.optionCostFormatted} USDC{loanCalc.isPromo ? ' (waived)' : ''}</span></div>
-            <div className="flex justify-between py-1"><span className="text-gray-400">Protocol Fee</span><span className="font-semibold text-gray-900">{loanCalc.protocolFeeFormatted} USDC</span></div>
-            <div className="flex justify-between py-1 border-t border-gray-100 mt-1 pt-2"><span className="text-gray-400 font-medium">Effective APR</span><span className="font-bold text-emerald-500">{effectiveApr}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Strike</span><span className="font-semibold text-gray-900 dark:text-white">${state.selectedStrike?.toLocaleString()}{loanCalc.isPromo ? ' 🔥' : ''}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Expiry</span><span className="font-semibold text-gray-900 dark:text-white">{expiryDate}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Repayment</span><span className="font-semibold text-gray-900 dark:text-white">{repayAmount}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Interest</span><span className="font-semibold text-gray-900 dark:text-white">{loanCalc.capitalCostFormatted} USDC</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Option Premium</span><span className="font-semibold text-gray-900 dark:text-white">{loanCalc.optionCostFormatted} USDC{loanCalc.isPromo ? ' (waived)' : ''}</span></div>
+            <div className="flex justify-between py-1"><span className="text-gray-400 dark:text-gray-500">Protocol Fee</span><span className="font-semibold text-gray-900 dark:text-white">{loanCalc.protocolFeeFormatted} USDC</span></div>
+            <div className="flex justify-between py-1 border-t border-gray-100 dark:border-zend-border/50 mt-1 pt-2"><span className="text-gray-400 dark:text-gray-500 font-medium">Effective APR</span><span className="font-bold text-emerald-500">{effectiveApr}</span></div>
           </div>
         </div>
       ) : (
@@ -93,7 +93,7 @@ export function SwapInterface({ onReview, onOpenCollateralModal, onOpenStrikeMod
       <button
         onClick={onReview}
         disabled={!canReview}
-        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(6,214,160,0.3)]"
+        className="mt-6 w-full py-4 rounded-2xl font-semibold text-white bg-zend-blue hover:bg-zend-blue-dark disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-500 dark:disabled:text-gray-400 disabled:shadow-none disabled:cursor-not-allowed transition-all shadow-[0_4px_16px_rgba(6,214,160,0.3)]"
       >
         Review Loan
       </button>

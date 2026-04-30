@@ -96,11 +96,11 @@ export function ReviewModal({ open, onClose, depositAmount, receiveAmount, loanC
       <div className="space-y-4">
         {rows.map(([label, value]) => (
           <div key={label} className="flex justify-between text-sm">
-            <span className="text-gray-500">{label}</span>
-            <span className="font-semibold text-gray-900">{value}</span>
+            <span className="text-gray-500 dark:text-gray-400">{label}</span>
+            <span className="font-semibold text-gray-900 dark:text-white">{value}</span>
           </div>
         ))}
-        <p className="text-xs text-gray-400 mt-4">European option: exercise only at expiry within 1-hour window. No early repayment.</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">European option: exercise only at expiry within 1-hour window. No early repayment.</p>
         <button
           onClick={confirm}
           disabled={submitting}

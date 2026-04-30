@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Smooth scrolling + color scheme */
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 /* Balanced headings */

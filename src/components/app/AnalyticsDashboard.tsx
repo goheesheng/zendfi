@@ -84,37 +84,37 @@ export function AnalyticsDashboard() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">Market Overview <TokenIcon symbol="ETH" size={22} /></h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">Market Overview <TokenIcon symbol="ETH" size={22} /></h2>
 
       {/* Stats Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">ETH Price</div>
-          <div className="text-xl font-bold text-gray-900">{ethPrice !== '--' ? ethPrice : <span className="text-sm text-gray-300">Loading...</span>}</div>
-          <div className="text-[11px] text-gray-300 mt-1">Chainlink Oracle</div>
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">ETH Price</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">{ethPrice !== '--' ? ethPrice : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Chainlink Oracle</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">MM Liquidity</div>
-          <div className="text-xl font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : <span className="text-sm text-gray-300">Loading...</span>}</div>
-          <div className="text-[11px] text-gray-300 mt-1">USDC available</div>
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">MM Liquidity</div>
+          <div className="text-xl font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">USDC available</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">Promo APR</div>
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Promo APR</div>
           <div className="text-xl font-bold text-emerald-500">{PROMO_CONFIG.promoBorrowingFeePercent}%</div>
-          <div className="text-[11px] text-gray-300 mt-1">Qualifying loans</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Qualifying loans</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">Active Loans</div>
-          <div className="text-xl font-bold text-gray-900">{activeLoans}</div>
-          <div className="text-[11px] text-gray-300 mt-1">On-chain</div>
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Active Loans</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">{activeLoans}</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">On-chain</div>
         </div>
       </div>
 
       {/* Option Premium Chart */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-1">Option Premium vs Strike Price</h3>
-        <p className="text-[11px] text-gray-400 mb-3">Lower strike = higher premium (more protection costs more)</p>
-        <div className="h-[100px] bg-gradient-to-b from-blue-50 to-white rounded-lg flex items-end px-2 pb-2 gap-[3px]">
+      <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Option Premium vs Strike Price</h3>
+        <p className="text-[11px] text-gray-400 dark:text-gray-500 mb-3">Lower strike = higher premium (more protection costs more)</p>
+        <div className="h-[100px] bg-gradient-to-b from-blue-50 to-white dark:from-zend-input dark:to-zend-card rounded-lg flex items-end px-2 pb-2 gap-[3px]">
           {premiumBars.map((h, i) => (
             <div
               key={i}
@@ -123,7 +123,7 @@ export function AnalyticsDashboard() {
             />
           ))}
         </div>
-        <div className="flex justify-between text-[10px] text-gray-300 mt-1 px-1">
+        <div className="flex justify-between text-[10px] text-gray-300 dark:text-gray-600 mt-1 px-1">
           <span>$800</span><span>$1,000</span><span>$1,200</span><span>$1,400</span>
           <span className="text-emerald-500 font-semibold">Promo</span><span>$1,600</span><span>$1,800</span>
         </div>
@@ -132,8 +132,8 @@ export function AnalyticsDashboard() {
       {/* Two-column info cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Loan Parameters */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-zend-blue" />
             Loan Parameters
           </h3>
@@ -146,17 +146,17 @@ export function AnalyticsDashboard() {
               ['Settlement', 'European (at expiry)'],
               ['Exercise Window', '1 hour'],
             ].map(([label, value, color]) => (
-              <div key={label} className="flex justify-between text-sm py-[5px] border-b border-gray-50 last:border-0">
-                <span className="text-gray-400">{label}</span>
-                <span className={`font-semibold ${color === 'green' ? 'text-emerald-500' : 'text-gray-900'}`}>{value}</span>
+              <div key={label} className="flex justify-between text-sm py-[5px] border-b border-gray-50 dark:border-zend-border/50 last:border-0">
+                <span className="text-gray-400 dark:text-gray-500">{label}</span>
+                <span className={`font-semibold ${color === 'green' ? 'text-emerald-500' : 'text-gray-900 dark:text-white'}`}>{value}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Cost Breakdown */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             Cost Breakdown
           </h3>
@@ -169,9 +169,9 @@ export function AnalyticsDashboard() {
               ['Min Duration', `${state.settings.minDurationDays} days`],
               ['Collateral Types', 'ETH, cbBTC'],
             ].map(([label, value, style]) => (
-              <div key={label as string} className="flex justify-between text-sm py-[5px] border-b border-gray-50 last:border-0">
-                <span className="text-gray-400">{label}</span>
-                <span className="font-semibold text-gray-900 flex items-center gap-1.5">
+              <div key={label as string} className="flex justify-between text-sm py-[5px] border-b border-gray-50 dark:border-zend-border/50 last:border-0">
+                <span className="text-gray-400 dark:text-gray-500">{label}</span>
+                <span className="font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
                   {value}
                   {style === 'badge' && <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded font-semibold uppercase">Promo</span>}
                   {style === 'green' && <span className="text-emerald-500">{''}</span>}
@@ -183,11 +183,11 @@ export function AnalyticsDashboard() {
       </div>
 
       {/* Expiry Scenarios */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">What Happens at Expiry?</h3>
+      <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">What Happens at Expiry?</h3>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-[11px] text-gray-400 uppercase tracking-wider">
+            <tr className="text-[11px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">
               <th className="text-left pb-2 font-medium">Scenario</th>
               <th className="text-left pb-2 font-medium">ETH Price</th>
               <th className="text-left pb-2 font-medium">You Do</th>
@@ -195,22 +195,22 @@ export function AnalyticsDashboard() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-gray-50">
-              <td className="py-2 font-semibold text-gray-900">Above strike</td>
+            <tr className="border-t border-gray-50 dark:border-zend-border/50">
+              <td className="py-2 font-semibold text-gray-900 dark:text-white">Above strike</td>
               <td className="py-2 text-emerald-500">Above $1,500</td>
-              <td className="py-2 text-gray-600">Repay USDC</td>
+              <td className="py-2 text-gray-600 dark:text-gray-300">Repay USDC</td>
               <td className="py-2 text-emerald-500">Get ETH back</td>
             </tr>
-            <tr className="border-t border-gray-50">
-              <td className="py-2 font-semibold text-gray-900">Below strike</td>
+            <tr className="border-t border-gray-50 dark:border-zend-border/50">
+              <td className="py-2 font-semibold text-gray-900 dark:text-white">Below strike</td>
               <td className="py-2 text-amber-500">Below $1,500</td>
-              <td className="py-2 text-gray-600">Walk away</td>
+              <td className="py-2 text-gray-600 dark:text-gray-300">Walk away</td>
               <td className="py-2 text-gray-500">Keep USDC, lose ETH</td>
             </tr>
-            <tr className="border-t border-gray-50">
-              <td className="py-2 font-semibold text-gray-900">Do nothing</td>
-              <td className="py-2 text-gray-400">Any price</td>
-              <td className="py-2 text-gray-600">No action in 1h</td>
+            <tr className="border-t border-gray-50 dark:border-zend-border/50">
+              <td className="py-2 font-semibold text-gray-900 dark:text-white">Do nothing</td>
+              <td className="py-2 text-gray-400 dark:text-gray-500">Any price</td>
+              <td className="py-2 text-gray-600 dark:text-gray-300">No action in 1h</td>
               <td className="py-2 text-amber-500">Lender keeps collateral</td>
             </tr>
           </tbody>
@@ -218,15 +218,15 @@ export function AnalyticsDashboard() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Recent Protocol Activity</h3>
+      <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Recent Protocol Activity</h3>
         <div className="flex gap-4 mb-3">
           {(['all', 'borrows', 'settlements'] as const).map((f) => (
             <button
               key={f}
               onClick={() => setActivityFilter(f)}
               className={`text-sm font-medium py-2 px-1 border-b-2 transition-colors capitalize min-h-[44px] ${
-                activityFilter === f ? 'text-gray-900 border-zend-blue' : 'text-gray-400 border-transparent'
+                activityFilter === f ? 'text-gray-900 dark:text-white border-zend-blue' : 'text-gray-400 dark:text-gray-500 border-transparent'
               }`}
             >
               {f}
@@ -234,15 +234,15 @@ export function AnalyticsDashboard() {
           ))}
         </div>
         {filteredLoans.length === 0 ? (
-          <p className="text-sm text-gray-300 py-2">No activity found</p>
+          <p className="text-sm text-gray-300 dark:text-gray-600 py-2">No activity found</p>
         ) : (
           <div className="space-y-0">
             {filteredLoans.slice(0, 5).map((loan) => (
-              <div key={loan.quotationId} className="flex justify-between text-sm py-[5px] border-b border-gray-50 last:border-0">
-                <span className="text-gray-400">
+              <div key={loan.quotationId} className="flex justify-between text-sm py-[5px] border-b border-gray-50 dark:border-zend-border/50 last:border-0">
+                <span className="text-gray-400 dark:text-gray-500">
                   QID {loan.quotationId} — <span className="capitalize">{loan.status}</span>
                 </span>
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-gray-900 dark:text-white">
                   {loan.collateralToken?.toLowerCase() === WETH_ADDRESS
                     ? `${formatEth(loan.collateralAmount)} ETH`
                     : `${formatEth(loan.collateralAmount)} BTC`}
@@ -256,8 +256,8 @@ export function AnalyticsDashboard() {
       </div>
 
       {/* Contract Addresses */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Contract Addresses</h3>
+      <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Contract Addresses</h3>
         <div className="space-y-0">
           {[
             ['LoanCoordinator', LOAN_COORDINATOR_ADDRESS],
@@ -265,8 +265,8 @@ export function AnalyticsDashboard() {
             ['USDC', USDC_ADDRESS],
             ['WETH', WETH_ADDRESS],
           ].map(([name, addr]) => (
-            <div key={name} className="flex justify-between text-sm py-[5px] border-b border-gray-50 last:border-0">
-              <span className="text-gray-400">{name}</span>
+            <div key={name} className="flex justify-between text-sm py-[5px] border-b border-gray-50 dark:border-zend-border/50 last:border-0">
+              <span className="text-gray-400 dark:text-gray-500">{name}</span>
               <a
                 href={`https://basescan.org/address/${addr}`}
                 target="_blank"
@@ -278,8 +278,8 @@ export function AnalyticsDashboard() {
             </div>
           ))}
           <div className="flex justify-between text-sm py-[5px]">
-            <span className="text-gray-400">Network</span>
-            <span className="font-semibold text-gray-900">Base (8453)</span>
+            <span className="text-gray-400 dark:text-gray-500">Network</span>
+            <span className="font-semibold text-gray-900 dark:text-white">Base (8453)</span>
           </div>
         </div>
       </div>
