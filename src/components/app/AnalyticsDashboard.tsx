@@ -43,36 +43,52 @@ export function AnalyticsDashboard() {
   const { state } = useLoanContext();
   const [recentLoans, setRecentLoans] = useState<RecentLoan[]>([]);
   const [ethPrice, setEthPrice] = useState<string>('--');
+  const [btcPrice, setBtcPrice] = useState<string>('--');
   const [activityFilter, setActivityFilter] = useState<'all' | 'borrows' | 'settlements'>('all');
 
-  // Fetch recent activity from indexer
+  // Fetch recent activity from indexer (poll every 60s)
   useEffect(() => {
-    fetch(`${LOAN_INDEXER_URL}/api/state`)
-      .then((r) => r.json())
-      .then((data) => {
-        const loans: Record<string, any> = data.loans || {};
-        const sorted = Object.values(loans)
-          .sort((a: any, b: any) => Number(b.quotationId) - Number(a.quotationId))
-          .slice(0, 8) as RecentLoan[];
-        setRecentLoans(sorted);
-      })
-      .catch(() => {});
+    const fetchLoans = () => {
+      fetch(`${LOAN_INDEXER_URL}/api/state`)
+        .then((r) => r.json())
+        .then((data) => {
+          const loans: Record<string, any> = data.loans || {};
+          const sorted = Object.values(loans)
+            .sort((a: any, b: any) => Number(b.quotationId) - Number(a.quotationId))
+            .slice(0, 8) as RecentLoan[];
+          setRecentLoans(sorted);
+        })
+        .catch(() => {});
+    };
+    fetchLoans();
+    const interval = setInterval(fetchLoans, 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Fetch ETH price from pricing proxy
+  // Fetch ETH + BTC price from pricing proxy (poll every 30s)
   useEffect(() => {
-    fetch('/api/pricing')
-      .then((r) => r.json())
-      .then((data) => {
-        const ethKey = Object.keys(data).find((k) => k.startsWith('ETH'));
-        if (ethKey && data[ethKey]?.underlying_price) {
-          setEthPrice(`$${Math.round(data[ethKey].underlying_price).toLocaleString()}`);
-        }
-      })
-      .catch(() => {});
+    const fetchPrices = () => {
+      fetch('/api/pricing')
+        .then((r) => r.json())
+        .then((data) => {
+          const ethKey = Object.keys(data).find((k) => k.startsWith('ETH'));
+          if (ethKey && data[ethKey]?.underlying_price) {
+            setEthPrice(`$${Math.round(data[ethKey].underlying_price).toLocaleString()}`);
+          }
+          const btcKey = Object.keys(data).find((k) => k.startsWith('BTC'));
+          if (btcKey && data[btcKey]?.underlying_price) {
+            setBtcPrice(`$${Math.round(data[btcKey].underlying_price).toLocaleString()}`);
+          }
+        })
+        .catch(() => {});
+    };
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const activeLoans = state.loans.size;
+  // Active loans from indexer (global count, not local state)
+  const activeLoans = recentLoans.filter((l) => l.status !== 'settled' && l.status !== 'cancelled').length || state.loans.size;
 
   const filteredLoans = recentLoans.filter((l) => {
     if (activityFilter === 'borrows') return l.status === 'requested';
@@ -87,25 +103,30 @@ export function AnalyticsDashboard() {
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">Market Overview <TokenIcon symbol="ETH" size={22} /></h2>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">ETH Price</div>
-          <div className="text-xl font-bold text-gray-900 dark:text-white">{ethPrice !== '--' ? ethPrice : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
-          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Chainlink Oracle</div>
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1 flex items-center gap-1"><TokenIcon symbol="ETH" size={12} /> ETH</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">{ethPrice !== '--' ? ethPrice : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Deribit</div>
         </div>
         <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">MM Liquidity</div>
-          <div className="text-xl font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1 flex items-center gap-1"><TokenIcon symbol="BTC" size={12} /> BTC</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">{btcPrice !== '--' ? btcPrice : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
+          <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Deribit</div>
+        </div>
+        <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Liquidity</div>
+          <div className="text-lg font-bold text-zend-blue">{mmLiquidity !== '--' && !isNaN(Number(mmLiquidity)) ? `$${Number(mmLiquidity).toLocaleString()}` : <span className="text-sm text-gray-300 dark:text-gray-600">Loading...</span>}</div>
           <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">USDC available</div>
         </div>
         <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
           <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Promo APR</div>
-          <div className="text-xl font-bold text-emerald-500">{PROMO_CONFIG.promoBorrowingFeePercent}%</div>
+          <div className="text-lg font-bold text-emerald-500">{PROMO_CONFIG.promoBorrowingFeePercent}%</div>
           <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">Qualifying loans</div>
         </div>
         <div className="bg-white dark:bg-zend-card border border-gray-200 dark:border-zend-border rounded-xl p-4">
-          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Active Loans</div>
-          <div className="text-xl font-bold text-gray-900 dark:text-white">{activeLoans}</div>
+          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-1">Loans</div>
+          <div className="text-lg font-bold text-gray-900 dark:text-white">{activeLoans}</div>
           <div className="text-[11px] text-gray-300 dark:text-gray-600 mt-1">On-chain</div>
         </div>
       </div>
